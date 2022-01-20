@@ -1,0 +1,45 @@
+package com.study;
+import java.util.*;
+
+public class Main {
+    static int n;
+    static int[][] arr;
+    static int count = 0;
+    public static void main(String[] args){
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        arr = new int[n][n];
+        for(int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++)
+                arr[i][j] = scan.nextInt();
+        }
+        move(0,1,0);
+        System.out.println(count);
+    }
+    public static void move(int x, int y, int cnt){
+        if(x == n - 1 && y == n-1 && arr[x][y] != 1){
+            count++;
+            return;
+        }
+        if(cnt == 0){
+            if(x < n && y+1 < n && arr[x][y+1] == 0)
+                move(x,y+1,0);
+            if(x+1 < n && y+1 < n && arr[x][y+1] == 0 && arr[x+1][y+1] == 0 && arr[x+1][y] == 0)
+                move(x+1,y+1,2);
+        }
+        if(cnt == 1){
+            if(x+1 < n && y < n && arr[x+1][y] == 0)
+                move(x+1,y,1);
+            if(x+1 < n && y+1 < n && arr[x][y+1] == 0 && arr[x+1][y+1] == 0 && arr[x+1][y] == 0)
+                move(x+1, y+1, 2);
+        }
+        if(cnt == 2){
+            if(x < n && y+1 < n && arr[x][y+1] == 0)
+                move(x, y+1, 0);
+            if(x+1 < n && y < n && arr[x+1][y] == 0)
+                move(x+1,y,1);
+            if(x+1 < n && y+1 < n && arr[x][y+1] == 0 && arr[x+1][y+1] == 0 && arr[x+1][y] == 0)
+                move(x+1,y+1,2);
+        }
+    }
+}
