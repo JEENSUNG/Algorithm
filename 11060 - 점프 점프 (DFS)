@@ -1,0 +1,47 @@
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+public class Main {
+    static int n,s;
+    static int[] arr;
+    static boolean[] visit;
+    public static void main(String[] args){
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        arr = new int[n];
+        visit = new boolean[n];
+        for(int i = 0; i < n; i++)
+            arr[i] = scan.nextInt();
+        int s = Integer.MAX_VALUE;
+        s = Math.min(s, bfs(0, 0));
+        System.out.println(s);
+    }
+    static int bfs(int x, int cnt){
+        visit[x] = true;
+        Queue<Point> queue = new LinkedList<>();
+        queue.offer(new Point(x, 0));
+        while (!queue.isEmpty()) {
+            Point now = queue.poll();
+            if(now.x == n-1)
+                return now.cnt;
+            if(arr[now.x] == 0)
+                continue;
+            for(int i = 1; i <= arr[now.x]; i++){
+                if(now.x + i < n && !visit[now.x + i]) {
+                    visit[now.x + i] = true;
+                    queue.offer(new Point(now.x + i, now.cnt + 1));
+                }
+            }
+        }
+        return -1;
+    }
+}
+class Point{
+    int x;
+    int cnt;
+    Point(int x, int cnt){
+        this.x = x;
+        this.cnt = cnt;
+    }
+}
