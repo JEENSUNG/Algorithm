@@ -3,51 +3,64 @@ import java.util.*;
 public class Main {
     static int n,m;
     static int[][] arr;
-    static int count = 0;
+    static int[] dx = {-1,0,0,1};
+    static int[] dy = {0,1,-1,0};
+    static boolean[][] visit = new boolean[n][m];
+    static int count;
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
         n = scan.nextInt();
         m = scan.nextInt();
         arr = new int[n][m];
+        visit = new boolean[n][m];
         for(int i = 0; i < n; i++){
             for(int j = 0; j < m; j++){
                 arr[i][j] = scan.nextInt();
             }
         }
-        System.out.println(count);
-    }
-    public static int brute(int x, int y){
-        count = Integer.MIN_VALUE;
-        int sum = 0;
-        if(x == n-1 && y == m - 1)
-            return count;
-        if(x + 3 < n && x >= 0){
-            for(int i = 0; i < 4; i++) {
-                sum += arr[x][y+i];
-                count = Math.max(count, sum);
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                dfs(i,j,0,0);
+                check(i,j);
             }
         }
-        if(x + 2 < n && y + 2 < m){
-            sum = arr[x][y] + arr[x][y+1] + arr[x+1][y] + arr[x+1][y+1];
+        System.out.println(count);
+    }
+    static void dfs(int x, int y, int depth, int sum){
+        if(depth == 4){
             count = Math.max(count, sum);
+            return;
         }
-        if(x + 1 < n && y + 2 < m){
-            sum = arr[x][y] + arr[x+1][y] + arr[x+2][y] +arr[x+2][y+1];
-            count = Math.max(count, sum);
+        for(int i = 0; i < 4; i++){
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            if(nx < 0 || ny < 0 || nx >= n || ny >= m)
+                continue;
+            if(visit[nx][ny])
+                continue;
+            visit[nx][ny] = true;
+            dfs(nx,ny,depth+1,sum + arr[nx][ny]);
+            visit[nx][ny] = false;
         }
-        if(x + 2 < n && y + 1 < m){
-            sum = arr[x][y] + arr[x+1][y] + arr[x+1][y+1] + arr[x+2][y+1];
-            count = Math.max(count, sum);
+    }
+    static void check(int x, int y){
+        int total = 4;
+        int sum = arr[x][y];
+        int min = Integer.MAX_VALUE;
+        for(int i = 0; i < 4; i++){
+            if(total < 3)
+                return;
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            if(nx < 0 || ny < 0 || nx >= n || ny >= m){
+                total--;
+                continue;
+            }
+            min = Math.min(min, arr[nx][ny]);
+            sum += arr[nx][ny];
         }
-        if(x + 1 < n && y + 2 < m){
-            sum = arr[x][y] + arr[x][y+1] + arr[x][y+2] + arr[x+1][y+1];
-            count = Math.max(count, sum);
-        }
-        if(x != n-1 && y != m-1)
-            brute(x,y+1);
-        if(x != n-1 && y == m-1)
-            brute(x+1, 0);
-
-        return count;
+        if(total == 4)
+            sum = sum - min;
+        count = Math.max(sum,count);
     }
 }
