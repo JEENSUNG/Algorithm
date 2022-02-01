@@ -1,0 +1,86 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class Main{
+    static int n,m;
+    static int[][] arr;
+    static int zeroCount = 0;
+    static List<CCTV> list;
+    static int min;
+    static int[] dx = {0,1,0,-1};
+    static int[] dy = {1,0,-1,0};
+    static int [][][] watchDirs = {
+            {},//0번타입
+            {{0},{1},{2},{3}},//1번타입
+            {{0,1},{2,3}},//2번타입
+            {{0,2},{2,1},{1,3},{3,0}},//3번타입
+            {{0,1,2,3},{0,1,3},{0,2,3},{1,2,3}},//4번타입
+            {{0,1,2,3}}//5번타입
+    };
+    public static void main(String[] args){
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        m = scan.nextInt();
+        arr = new int[n][m];
+        list = new ArrayList<>();
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                arr[i][j] = scan.nextInt();
+                if(arr[i][j] > 0 && arr[i][j] < 6){
+                    list.add(new CCTV(i,j,arr[i][j]));
+                }
+                else if(arr[i][j] == 0){
+                    zeroCount++;
+                }
+            }
+        }
+        dfs(0,0);
+        System.out.println(min);
+    }
+    static void dfs(int cctvIdx, int sum){
+        if(cctvIdx == list.size()){
+            min = Math.min(min, zeroCount - sum);
+            return;
+        }
+
+        CCTV cctv = list.get(cctvIdx);
+        for(int i = 0; i < watchDirs[cctv.t].length; i++){
+            int[] ans = watchDirs[cctv.t][i];
+            int scan = search(cctv, ans, -1);
+            dfs(cctvIdx+1, sum + scan);
+            search(cctv,ans,1);
+        }
+    }
+    static int search(CCTV cctv, int[] ans, int flag){
+        int cnt = 0;
+        for(int i = 0; i < ans.length; i++){
+            for(int j = 1; ; j++){
+                int nx = cctv.x + dx[i] * j;
+                int ny = cctv.y + dy[i] * j;
+                if(!isIn(nx,ny) || arr[nx][ny] == 6){
+                    break;
+                }
+                if(arr[nx][ny] > 0){
+                    continue;
+                }
+                if(arr[nx][ny] == 0){
+                    cnt++;
+                }
+                arr[nx][ny] += flag;
+            }
+        }
+        return cnt;
+    }
+    static boolean isIn(int x, int y){
+        return 0 <= x && 0 <= y && x < n && y < m;
+    }
+}
+class CCTV{
+    int x,y,t;
+    public CCTV(int x, int y, int t){
+        this.x = x;
+        this.y = y;
+        this.t = t;
+    }
+}
