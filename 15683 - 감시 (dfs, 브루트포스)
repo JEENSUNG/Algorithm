@@ -8,8 +8,8 @@ class Main{
     static int zeroCount = 0;
     static List<CCTV> list;
     static int min;
-    static int[] dx = {0,1,0,-1};
-    static int[] dy = {1,0,-1,0};
+    static int[] dx = {-1,1,0,0};
+    static int[] dy = {0,0,1,-1};
     static int [][][] watchDirs = {
             {},//0번타입
             {{0},{1},{2},{3}},//1번타입
@@ -35,6 +35,7 @@ class Main{
                 }
             }
         }
+        min = Integer.MAX_VALUE;
         dfs(0,0);
         System.out.println(min);
     }
@@ -56,8 +57,8 @@ class Main{
         int cnt = 0;
         for(int i = 0; i < ans.length; i++){
             for(int j = 1; ; j++){
-                int nx = cctv.x + dx[i] * j;
-                int ny = cctv.y + dy[i] * j;
+                int nx = cctv.x + deltas[ans[i]][0] * j;
+                int ny = cctv.y + deltas[ans[i]][1] * j;
                 if(!isIn(nx,ny) || arr[nx][ny] == 6){
                     break;
                 }
