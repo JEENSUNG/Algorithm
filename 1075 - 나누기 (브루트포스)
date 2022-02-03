@@ -1,39 +1,22 @@
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Scanner;
-import java.util.StringTokenizer;
 
 class Main {
-    static String n, m;
-    public static void main(String[] args){
+    static int n, m;
+    public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
-        n = scan.next();
-        m = scan.next();
-        if(Long.parseLong(n) % Long.parseLong(m) == 0) {
-            System.out.print(n.charAt(n.length() - 2));
-            System.out.print(n.charAt(n.length() - 1));
-            System.exit(0);
-        }
-        else {
-            Brute(n, m, 0);
-        }
-    }
-    static void Brute(String x, String y, int cnt){
-        if(cnt == 0) {
-            Long t = Long.parseLong(x);
-            t = t - (t % 100);
-            Brute(String.valueOf(t), y, cnt + 1);
-        }else{
-            if(Long.parseLong(x) % Long.parseLong(y) == 0) {
-                System.out.print(x.charAt(x.length() - 2));
-                System.out.print(x.charAt(x.length() - 1));
-                System.exit(0);
+        n = scan.nextInt();
+        m = scan.nextInt();
+        int t = (n / 100) * 100;
+        while(true){
+            if(t % m == 0){
+                int result = t % 100;
+                if(result < 10)
+                    System.out.println("0" + result);
+                else
+                    System.out.print(result);
+                return;
             }
-            Long t = Long.parseLong(x);
-            t = t + 1;
-            Brute(String.valueOf(t), y, 1);
+            t++;
         }
     }
 }
