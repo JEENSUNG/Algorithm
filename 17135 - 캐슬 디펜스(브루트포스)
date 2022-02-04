@@ -1,0 +1,102 @@
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Scanner;
+class Point{
+    int x, y, depth, idx;
+    public Point(int x, int y, int depth, int idx) {
+        this.x = x;
+        this.y = y;
+        this.depth = depth;
+        this.idx = idx;
+    }
+}
+class Main {
+    static int n, m, d;
+    static int[][] arr;
+    static int MAX = Integer.MIN_VALUE;
+    static boolean[] visit;
+    static int[] dx = {-1,1,0,0};
+    static int[] dy = {0,0,-1,1};
+    static LinkedList<Point> queue = new LinkedList<>();
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        m = scan.nextInt();
+        d = scan.nextInt();
+        arr = new int[n+1][m];
+        visit = new boolean[m];
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                arr[i][j] = scan.nextInt();
+            }
+        }
+        Brute(0,0);
+        System.out.println(MAX);
+    }
+    static void Brute(int k, int cnt){
+        if(cnt == 3){
+            int[][] ans = new int[n+1][m];
+            for(int i = 0; i < n+1; i++){
+                for(int j = 0; j < m; j++)
+                    ans[i][j] = arr[i][j];
+            }
+            bfs(ans);
+            return;
+        }
+        for(int i = k; i < m; i++){
+            if(!visit[i]){
+                visit[i] = true;
+                Brute(i,cnt+1);
+                visit[i] = false;
+            }
+        }
+    }
+    static void bfs(int[][] ans){
+        int t = 0;
+        for(int i = n; i > 0; i--){
+            int archerIdx = 0;
+            queue = new LinkedList<>();
+            for(int j = 0; j < m; j++){
+                if(visit[j]){
+                    ans[i][j] = 2;
+                    queue.offer(new Point(i-1,j,1,archerIdx++));
+                }else
+                    ans[i][j] = 0;
+            }
+            boolean[] isEnemyFind = new boolean[3];
+            boolean[][][] visited = new boolean[n][m][3];
+            boolean[][] isAlreadyFind = new boolean[n][m];
+            ArrayList<Point> list = new ArrayList<>();
+            while(!queue.isEmpty()) {
+                Point now = queue.poll();
+                if (isEnemyFind[now.idx])
+                    continue;
+                if (ans[now.x][now.y] == 1) {
+                    isEnemyFind[now.idx] = true;
+                    if (!isAlreadyFind[now.x][now.y]) {
+                        isAlreadyFind[now.x][now.y] = true;
+                        list.add(now);
+                        t++;
+                    }
+                    continue;
+                }
+                if (!isEnemyFind[now.idx]) {
+                    visited[now.x][now.y][now.idx] = true;
+                    for (int j = 0; j < 3; j++) {
+                        int nx = now.x + dx[j];
+                        int ny = now.y + dy[j];
+                        if (nx >= 0 || nx < n || ny >= 0 || ny < m && !visited[nx][ny][now.idx] && now.depth < d) {
+                            queue.offer(new Point(nx, ny, now.depth + 1, now.idx));
+                        }
+                    }
+                }
+            }
+            for(int j = 0; j < list.size(); j++){
+                Point now = list.get(j);
+                ans[now.x][now.y] = 0;
+            }
+        }
+        MAX = Math.max(MAX, t);
+    }
+}
