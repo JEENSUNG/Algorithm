@@ -1,6 +1,6 @@
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 class Point{
     int x, y, depth, idx;
@@ -16,9 +16,8 @@ class Main {
     static int[][] arr;
     static int MAX = Integer.MIN_VALUE;
     static boolean[] visit;
-    static int[] dx = {-1,1,0,0};
-    static int[] dy = {0,0,-1,1};
-    static LinkedList<Point> queue = new LinkedList<>();
+    static int[] dx = {0,-1,0};
+    static int[] dy = {-1,0,1};
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
         n = scan.nextInt();
@@ -38,8 +37,7 @@ class Main {
         if(cnt == 3){
             int[][] ans = new int[n+1][m];
             for(int i = 0; i < n+1; i++){
-                for(int j = 0; j < m; j++)
-                    ans[i][j] = arr[i][j];
+                if (m >= 0) System.arraycopy(arr[i], 0, ans[i], 0, m);
             }
             bfs(ans);
             return;
@@ -56,7 +54,7 @@ class Main {
         int t = 0;
         for(int i = n; i > 0; i--){
             int archerIdx = 0;
-            queue = new LinkedList<>();
+            Queue<Point> queue = new LinkedList<>();
             for(int j = 0; j < m; j++){
                 if(visit[j]){
                     ans[i][j] = 2;
@@ -86,7 +84,7 @@ class Main {
                     for (int j = 0; j < 3; j++) {
                         int nx = now.x + dx[j];
                         int ny = now.y + dy[j];
-                        if (nx >= 0 || nx < n || ny >= 0 || ny < m && !visited[nx][ny][now.idx] && now.depth < d) {
+                        if (nx >= 0 && nx < n && ny >= 0 && ny < m && !visited[nx][ny][now.idx] && now.depth < d) {
                             queue.offer(new Point(nx, ny, now.depth + 1, now.idx));
                         }
                     }
