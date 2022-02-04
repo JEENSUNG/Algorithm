@@ -1,0 +1,27 @@
+import java.util.*;
+class Main{
+    static int a,b,c,d;
+    static int max = Integer.MIN_VALUE;
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        a = scan.nextInt();
+        b = scan.nextInt();
+        c = scan.nextInt();
+        d = scan.nextInt();
+        dfs(0,0, 0);
+        System.out.println(max);
+    }
+    //5 3 2 10
+    static void dfs(int time, int work,int tired){
+        if(time <= 24) {
+            if(tired < 0)
+                tired = 0;
+            if(tired > d){
+                return;
+            }
+            dfs(time + 1, work + b, tired + a);
+            dfs(time + 1, work, tired - c);
+            max = Math.max(max, work);
+        }
+    }
+}
