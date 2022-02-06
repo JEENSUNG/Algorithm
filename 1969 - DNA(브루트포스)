@@ -1,0 +1,54 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+class Main{
+    static int a,b,c,d,e,f;
+    static char[][] arr;
+    static boolean[] visit;
+    static int max = Integer.MIN_VALUE;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        a = Integer.parseInt(st.nextToken());
+        b = Integer.parseInt(st.nextToken());
+        arr = new char[a][b];
+        int count = 0;
+        for(int i = 0; i < a; i++){
+            String str = br.readLine();
+            for(int j = 0; j < b; j++){
+                arr[i][j] = str.charAt(j);
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < b; i++){
+            int x = 0; int y = 0; int z = 0; int t = 0;
+            for(int j = 0; j < a; j++){
+                if(arr[j][i] == 'A')
+                    x++;
+                else if(arr[j][i] == 'C')
+                    y++;
+                else if(arr[j][i] == 'G')
+                    z++;
+                else
+                    t++;
+            }
+            int max = Math.max(x,Math.max(y,Math.max(z,t)));
+            if(max == x)
+                sb.append('A');
+            else if(max == y && x != y)
+                sb.append('C');
+            else if(max == z && z != y && z != x)
+                sb.append('G');
+            else if(max == t && t != x && t != y && t != z)
+                sb.append('T');
+            for(int j = 0; j < a; j++){
+                if(arr[j][i] != sb.charAt(i)){
+                    count++;
+                }
+            }
+        }
+        System.out.println(sb);
+        System.out.println(count);
+    }
+}
