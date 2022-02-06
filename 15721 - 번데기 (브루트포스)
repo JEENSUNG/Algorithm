@@ -1,0 +1,47 @@
+import java.util.*;
+class Main{
+    static int a,b,c,d,e,f;
+    static int[] arr;
+    static boolean[] visit;
+    static int max = Integer.MIN_VALUE;
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        a = scan.nextInt();
+        b = scan.nextInt();
+        c = scan.nextInt();
+        int t = dfs();
+        System.out.println(t);
+    }
+    static int dfs(){
+        int p = 0;
+        int q = 0;
+        int cnt = 2;
+        while(true){
+            for(int i = 0; i < 4; i++){
+                if (i % 2 == 0) {
+                    p++;
+                }else
+                    q++;
+                if(p == b && c == 0){
+                    return (p + q - 1) % a;
+                }
+                if(q == b && c == 1){
+                    return (p + q - 1) % a;
+                }
+            }
+            for(int i = 0; i < cnt; i++){
+                p++;
+                if(p == b && c == 0){
+                    return (p + q - 1) % a;
+                }
+            }
+            for(int i = 0; i < cnt; i++){
+                q++;
+                if(q == b && c == 1){
+                    return (p + q - 1) % a;
+                }
+            }
+            cnt++;
+        }
+    }
+}
