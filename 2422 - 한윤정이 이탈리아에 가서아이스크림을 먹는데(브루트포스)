@@ -1,0 +1,48 @@
+import java.util.*;
+class Main{
+    static int n,m,t;
+    static boolean[] visit;
+    static int[] ans;
+    static boolean arr[][];
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        m = scan.nextInt();
+        arr = new boolean[n][n];
+        for(int i = 0; i < m; i++){
+            int x = scan.nextInt() - 1;
+            int y = scan.nextInt() - 1;
+            arr[x][y] = true;
+            arr[y][x] = true;
+        }
+        visit = new boolean[n];
+        ans = new int[3];
+        dfs(0,0);
+        System.out.print(t);
+    }
+    static void dfs(int cnt, int k){
+        if(cnt == 3){
+            if (check()) {
+                t++;
+            }
+            return;
+        }
+        for(int i = k; i < n; i++){
+            if(!visit[i]){
+                visit[i] = true;
+                ans[cnt] = i;
+                dfs(cnt+1, i);
+                visit[i] = false;
+            }
+        }
+    }
+    static boolean check(){
+        for(int i = 0; i < 2; i++){
+            for(int j = i + 1;j < 3; j++){
+                if(arr[ans[i]][ans[j]])
+                    return false;
+            }
+        }
+        return true;
+    }
+}
