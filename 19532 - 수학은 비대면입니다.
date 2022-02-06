@@ -1,0 +1,24 @@
+import java.util.*;
+class Main{
+    static int a,b,c,d,e,f;
+    static int[] arr;
+    static boolean[] visit;
+    static int max = Integer.MIN_VALUE;
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        a = scan.nextInt();
+        b = scan.nextInt();
+        c = scan.nextInt();
+        d = scan.nextInt();
+        e = scan.nextInt();
+        f = scan.nextInt();
+        for(int x = -1000; x <= 1000; x++){
+            for(int y = -1000; y <= 1000; y++){
+                int p = a * x + b * y - c;
+                int q = d * x + e * y - f;
+                if(p == 0 && q == 0)
+                    System.out.print(x + " " + y);
+            }
+        }
+    }
+}
