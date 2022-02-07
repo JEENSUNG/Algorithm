@@ -1,0 +1,59 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args){
+		Scanner sc=new Scanner(System.in);
+		int H=sc.nextInt();
+		int W=sc.nextInt();
+		int N=sc.nextInt();
+		int max=0;
+		int[][] sticker=new int[N][2];
+		
+		for(int i=0;i<N;i++) {
+			sticker[i][0]=sc.nextInt();
+			sticker[i][1]=sc.nextInt();
+		}
+		
+		int a1,a2,b1,b2;
+		for(int i=0;i<N-1;i++) {
+			a1=sticker[i][0];
+			b1=sticker[i][1];
+			
+			for(int j=i+1;j<N;j++) {
+				a2=sticker[j][0];
+				b2=sticker[j][1];
+				
+				if(stick(a1,b1,H,W)) {
+					if(stick(a2,b2,H-a1,W)||stick(a2,b2,H,W-b1)) {
+						max=Math.max(max,a1*b1+a2*b2);
+                        continue;
+					}
+					if(stick(b2,a2,H-a1,W)||stick(b2,a2,H,W-b1)) {
+						max=Math.max(max,a1*b1+a2*b2);
+                        continue;
+					}
+				}
+				
+				if(stick(b1,a1,H,W)) {
+					if(stick(a2,b2,H-b1,W)||stick(a2,b2,H,W-a1)) {
+						max=Math.max(max,a1*b1+a2*b2);
+                        continue;
+					}
+					if(stick(b2,a2,H-b1,W)||stick(b2,a2,H,W-a1)) {
+						max=Math.max(max,a1*b1+a2*b2);
+                        continue;
+					}
+				}
+			}
+		}
+		System.out.println(max);
+	}
+	
+	public static boolean stick(int a,int b, int H,int W) {
+		if(a<=H&&b<=W) {
+			return true;
+		}
+		return false;
+	}
+}
