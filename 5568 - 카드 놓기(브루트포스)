@@ -1,0 +1,38 @@
+import java.util.*;
+class Main{
+    static int n,m;
+    static boolean[] visit;
+    static int[] ans;
+    static HashSet<Integer> hash = new HashSet<>();
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        m = scan.nextInt();
+        ans = new int[n];
+        visit = new boolean[n];
+        for(int i = 0; i < n; i++){
+            ans[i] = scan.nextInt();
+        }
+        dfs(0,0);
+        System.out.print(hash.size());
+    }
+    static void dfs(int cnt,int k){
+        if(cnt == m){
+            hash.add(k);
+            return;
+        }
+        for(int i = 0; i < n; i++){
+            if(!visit[i]){
+                int temp;
+                visit[i] = true;
+                if(ans[i] > 9){
+                    temp = k * 100 + ans[i];
+                }else{
+                    temp = k * 10 + ans[i];
+                }
+                dfs(cnt + 1, temp);
+                visit[i] = false;
+            }
+        }
+    }
+}
