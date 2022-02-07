@@ -1,0 +1,46 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+    static int[][] arr;
+    static int n,m;
+    static boolean[] visit;
+    static int max = Integer.MIN_VALUE;
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        m = scan.nextInt();
+        arr = new int[n][m];
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                arr[i][j] = scan.nextInt();
+            }
+        }
+        visit = new boolean[m];
+        dfs(0, 0);
+        System.out.print(max);
+    }
+    static void dfs(int cnt, int start){
+        if(cnt == 3) {
+            int sum = 0;
+            for(int i = 0; i < n; i++){
+                int sat = 0;
+                for(int j = 0; j < m; j++){
+                    if(visit[j]){
+                        sat = Math.max(sat, arr[i][j]);
+                    }
+                }
+                sum += sat;
+            }
+            max = Math.max(sum, max);
+            return;
+        }
+        for(int i = start; i < m; i++){
+            if(!visit[i]){
+                visit[i] = true;
+                dfs(cnt + 1, i);
+                visit[i] = false;
+            }
+        }
+    }
+}
