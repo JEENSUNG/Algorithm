@@ -1,0 +1,41 @@
+import java.util.Scanner;
+
+public class Main {
+    static int[][] arr;
+    static int[][][] memo = new int[21][21][4];
+    static int dx[] = {1,1,0,-1};
+    static int dy[] = {0,1,1,1};
+
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        arr = new int[21][21];
+        for (int i = 1; i <= 19;i++) {
+            for (int j = 1; j <= 19; j++) {
+                arr[i][j] = scan.nextInt();
+            }
+        }
+        System.out.print(find());
+        scan.close();
+    }
+    static String find(){
+        for(int j = 1; j <= 19; j++){
+            for(int i = 1; i <= 19; i++){
+                if(arr[i][j] != 0){
+                    for(int d = 0; d < 4; d++){
+                        if(memo[i][j][d] == 0 && search(i,j,d,arr[i][j]) == 5) {
+                            return arr[i][j] + "\n" + i + " " + j + "\n";
+                        }
+                    }
+                }
+            }
+        }
+        return "0";
+    }
+    static int search(int x, int y, int dir, int color){
+        int nx = x + dx[dir];
+        int ny = y + dy[dir];
+        if(arr[nx][ny] == color)
+            return memo[nx][ny][dir] = search(nx,ny,dir,color) + 1;
+        return 1;
+    }
+}
