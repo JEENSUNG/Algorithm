@@ -1,0 +1,56 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+
+public class Main {
+    static String str;
+    static ArrayList<Node> list = new ArrayList<>();
+    static int n;
+    static int[] arr = new int[26];
+    static int[] ans = new int[26];
+    static int min = Integer.MAX_VALUE;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        str = br.readLine();
+        for(int i = 0; i < str.length(); i++){
+            arr[str.charAt(i) - 'A']++;
+        }
+        n = Integer.parseInt(br.readLine());
+        for(int i = 0; i < n; i++){
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            list.add(new Node(Integer.parseInt(st.nextToken()),st.nextToken()));
+        }
+        dfs(0,0);
+        System.out.println(min == Integer.MAX_VALUE ? -1 : min);
+    }
+    static void dfs(int cnt, int sum){
+        if(cnt == n){
+            if(check())
+                min = Math.min(sum,min);
+            return;
+        }
+        for(int i = 0; i < list.get(cnt).dir.length(); i++) {
+            ans[list.get(cnt).dir.charAt(i) - 'A']++;
+        }
+        dfs(cnt+1,sum + list.get(cnt).x);
+        for(int i = 0; i < list.get(cnt).dir.length(); i++)
+            ans[list.get(cnt).dir.charAt(i)-'A']--;
+        dfs(cnt+1,sum);
+    }
+    static boolean check(){
+        for(int i = 0; i < 26; i++)
+            if(arr[i] > ans[i])
+                return false;
+        return true;
+    }
+}
+class Node{
+    int x;
+    String dir;
+    Node(int x, String dir){
+        this.x = x;
+        this.dir = dir;
+    }
+}
