@@ -1,0 +1,65 @@
+import java.util.Scanner;
+
+public class Main {
+    static int n;
+    static int dx[] = {-1,1,0,0};
+    static int dy[] = {0,0,1,-1};
+    static int[][] arr;
+    static int min = Integer.MAX_VALUE;
+    static boolean[][] visit;
+    public static void main(String[] args){
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        arr = new int[n][n];
+        visit = new boolean[n][n];
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++)
+                arr[i][j] = scan.nextInt();
+        }
+        dfs(0,0);
+        System.out.println(min);
+    }
+    static void dfs(int cnt, int sum){
+        if(cnt == 3) {
+            min = Math.min(min,sum);
+            return;
+        }
+
+        for(int i = 1; i < n-1; i++){
+            for(int j = 1; j < n-1; j++){
+                if(!visit[i][j] && check(i,j)){
+                    visit[i][j] = true;
+                    dfs(cnt + 1, sum + search(i,j));
+                    visitClear(i,j);
+                    visit[i][j] = false;
+                }
+            }
+        }
+    }
+    static boolean check(int x, int y){
+        for(int i = 0; i < 4; i++){
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            if(visit[nx][ny])
+                return false;
+        }
+        return true;
+    }
+    static void visitClear(int x, int y){
+        for(int i = 0; i < 4; i++){
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            visit[nx][ny] = false;
+        }
+    }
+    static int search(int x, int y){
+        int hap = arr[x][y];
+        for(int i = 0; i < 4; i++){
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            visit[nx][ny] = true;
+            hap += arr[nx][ny];
+        }
+        return hap;
+    }
+}
