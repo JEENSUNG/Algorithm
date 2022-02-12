@@ -1,0 +1,49 @@
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+    static int n;
+    static int[][] arr;
+    static int sum = Integer.MAX_VALUE;
+    static boolean visit[];
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        arr = new int[n][2];
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < 2; j++){
+                arr[i][j] = scan.nextInt();
+            }
+        }
+        visit = new boolean[n];
+        for(int i = 1; i <= n; i++){
+            dfs(i,0);
+            visit = new boolean[n];
+        }
+        System.out.println(sum);
+    }
+    static void dfs(int cnt, int k){
+        if(k == cnt){
+            sum = Math.min(check(), sum);
+            return;
+        }
+        for(int i = 0; i < n; i++){
+            if(!visit[i]) {
+                visit[i] = true;
+                dfs(cnt, k + 1);
+                visit[i] = false;
+            }
+        }
+    }
+    static int check(){
+        int a = 1;
+        int b = 0;
+        for(int i = 0; i < n; i++){
+            if(visit[i]){
+                a = a * arr[i][0];
+                b = b + arr[i][1];
+            }
+        }
+        return Math.abs(a-b);
+    }
+}
