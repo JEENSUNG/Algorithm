@@ -1,14 +1,29 @@
-import java.util.Arrays;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Main {
-    static String n;
-    static int[][] arr;
-    static int sum = Integer.MAX_VALUE;
-    static boolean visit[];
-    public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in);
-        n = scan.nextInt();
-
+    static String n, m;
+    static int size;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        n = br.readLine();
+        m = br.readLine();
+        size = m.length();
+        dfs(n.length(),n);
+        System.out.println(0);
+    }
+    static void dfs(int cnt,String str){
+        if(cnt == size){
+            if(str.equals(m)){
+                System.out.println(1);
+                System.exit(0);
+            }
+            return;
+        }
+        dfs(cnt + 1,str+'A');
+        str = str + 'B';
+        StringBuilder sb = new StringBuilder(str);
+        dfs(cnt + 1,sb.reverse().toString());
     }
 }
