@@ -1,0 +1,52 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+
+public class Main {
+    static int n, m;
+    static char[][] arr = new char[10][10];
+    static int max = -1;
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        m = scan.nextInt();
+        for(int i = 0; i < n; i++){
+            String str = scan.next();
+            for(int j = 0; j < m; j++){
+                arr[i][j] = str.charAt(j);
+            }
+        }
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                for(int dx = -n; dx < n; dx++){
+                    for(int dy = -m; dy < m; dy++){
+                        int val = 0;
+                        if(dx == 0 && dy == 0){
+                            continue;
+                        }
+                        int nowX = i;
+                        int nowY = j;
+                        while(nowX >= 0 && nowX < n && nowY >= 0 && nowY < m){
+                            val = 10 * val + (arr[nowX][nowY] - '0');
+                            if(check(val)){
+                                max = Math.max(max, val);
+                            }
+                            nowX += dx;
+                            nowY += dy;
+                        }
+                    }
+                }
+            }
+        }
+        System.out.println(max);
+    }
+    static boolean check(int x){
+        int t = (int)Math.sqrt(x);
+        for(int i = t - 2; i <= t + 2; i++){
+            if(i * i == x)
+                return true;
+        }
+        return false;
+    }
+}
