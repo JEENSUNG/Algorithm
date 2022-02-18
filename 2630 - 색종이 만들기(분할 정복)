@@ -1,0 +1,34 @@
+import java.util.*;
+class f{
+    static int n;
+    static int[][] arr;
+    static int[] ans = new int[2];
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        arr = new int[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                arr[i][j] = scan.nextInt();
+            }
+        }
+        dfs(n,0,0);
+        for (int an : ans) {
+            System.out.println(an);
+        }
+    }
+    static void dfs(int n, int x, int y){
+        for(int i = x; i < x + n; i++){
+            for(int j = y; j < y + n; j++){
+                if(arr[i][j] != arr[x][y]){
+                    dfs(n / 2, x, y);
+                    dfs(n / 2, x + n / 2, y);
+                    dfs(n / 2, x, y + n / 2);
+                    dfs(n / 2, x + (n / 2), y + (n / 2));
+                    return;
+                }
+            }
+        }
+        ans[arr[x][y]]++;
+    }
+}
