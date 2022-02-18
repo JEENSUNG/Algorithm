@@ -1,0 +1,45 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+
+class Main {
+    static int n;
+    static ArrayList<Integer> list = new ArrayList<>();
+    static ArrayList<Character> list2 = new ArrayList<>();
+    static Long max = Long.MIN_VALUE;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        n = Integer.parseInt(br.readLine());
+        String str = br.readLine();
+        for (int i = 0; i < n / 2 + 1; i++) {
+            list.add(str.charAt(i * 2) - '0');
+        }
+        for (int i = 0; i < n / 2; i++)
+            list2.add(str.charAt(i * 2 + 1));
+        dfs(0, list.get(0));
+        System.out.println(max);
+    }
+    static void dfs(int cnt, int sum) {
+        if(cnt >= list2.size()){
+            max = Math.max(max, sum);
+            return;
+        }
+        int x = calc(list2.get(cnt), sum, list.get(cnt + 1));
+        dfs(cnt + 1, x);
+        if(cnt + 1 < list2.size()){
+            int y = calc(list2.get(cnt + 1), list.get(cnt + 1), list.get(cnt + 2));
+            dfs(cnt +2, calc(list2.get(cnt), sum, y));
+        }
+    }
+    static int calc(Character s, int sum, int y){
+        if(s == '+')
+            return sum + y;
+        else if(s == '*')
+            return sum * y;
+        else if(s == '-')
+            return sum - y;
+        return 1;
+    }
+}
