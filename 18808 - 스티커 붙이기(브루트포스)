@@ -1,0 +1,80 @@
+import java.util.*;
+
+class Main {
+    static int n,m,k,a,b;
+    static int[][] arr;
+    static int[][] ans;
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        m = scan.nextInt();
+        k = scan.nextInt();
+        arr = new int[42][42];
+        for(int i = 0; i < k; i++) {
+            a = scan.nextInt();
+            b = scan.nextInt();
+            ans = new int[12][12];
+            for(int j = 0; j < a; j++){
+                for(int t = 0; t < b; t++){
+                    ans[j][t] = scan.nextInt();
+                }
+            }
+            dfs();
+        }
+        int cnt = 0;
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                cnt += arr[i][j];
+            }
+        }
+        System.out.println(cnt);
+    }
+    static void dfs(){
+        for(int i = 0; i < 4; i++){
+            boolean flag = false;
+            for(int nx = 0; nx <= n - a; nx++){
+                if(flag)
+                    break;
+                for(int ny = 0; ny <= m - b; ny++){
+                    if(check(nx,ny)){
+                        flag = true;
+                        break;
+                    }
+                }
+            }
+            if(flag)
+                break;
+            rotate();
+        }
+    }
+    static boolean check(int x, int y){
+        for(int i = 0; i < a; i++){
+            for(int j = 0; j < b; j++){
+                if(arr[x + i][y + j] == 1 && ans[i][j] == 1)
+                    return false;
+            }
+        }
+        for(int i = 0; i < a; i++){
+            for(int j = 0; j < b; j++){
+                if(ans[i][j] == 1){
+                    arr[x + i][y + j] = 1;
+                }
+            }
+        }
+        return true;
+    }
+    static void rotate(){
+        int[][] temp = new int[12][12];
+        for(int i = 0; i < a; i++){
+            if (b >= 0) System.arraycopy(ans[i], 0, temp[i], 0, b);
+        }
+        for(int i = 0; i < b; i++){
+            for(int j = 0; j < a; j++){
+                ans[i][j] = temp[a - 1 - j][i];
+            }
+        }
+        int t = a;
+        a = b;
+        b = t;
+    }
+}
