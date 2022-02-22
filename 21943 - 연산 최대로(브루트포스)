@@ -1,0 +1,38 @@
+import java.util.*;
+
+class Main {
+    static int n,a,b;
+    static int[] arr;
+    static int[] ans;
+    static int max = Integer.MIN_VALUE;
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        arr = new int[n];
+        ans = new int[n];
+        for(int i = 0; i < n; i++)
+            arr[i] = scan.nextInt();
+        a = scan.nextInt();
+        b = scan.nextInt();
+        System.out.println(dfs(0));
+    }
+    static int dfs(int cnt){
+        if(cnt == n){
+            return search();
+        }
+        int sum = 0;
+        for(int i = 0; i <= b; i++){
+            ans[i] += arr[cnt];
+            sum = Math.max(sum, dfs(cnt + 1));
+            ans[i] -= arr[cnt];
+        }
+        return sum;
+    }
+    static int search(){
+        int sum = 1;
+        for(int i = 0; i <= b; i++){
+            sum *= ans[i];
+        }
+        return sum;
+    }
+}
