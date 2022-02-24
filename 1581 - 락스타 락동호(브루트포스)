@@ -1,0 +1,34 @@
+import java.util.*;
+
+class Main {
+    static int FF, FS, SF, SS;
+    static int max = Integer.MIN_VALUE;
+    public static void main(String[] args){
+        Scanner scan = new Scanner(System.in);
+        FF = scan.nextInt();
+        FS = scan.nextInt();
+        SF = scan.nextInt();
+        SS = scan.nextInt();
+        if(FF == 0 && FS == 0){
+            System.out.println(Math.max(SF + 1, SS + 1));
+        }else{
+            dfs(FF,FS,SF,SS, 0, 0);
+        }
+    }
+    static void dfs(int x, int y, int z, int t, int cnt, int sum){
+        if(cnt == 4){
+            return;
+        }
+        if(cnt == 0){
+            dfs(0,y,z,t,cnt + 1, sum + x);
+            dfs(x,0,z,t,cnt + 1, sum + y);
+            dfs(x,y,0,t, cnt + 1, sum + z);
+            dfs(x,y,z,0,cnt + 1, sum + t);
+        }else{
+
+        }
+    }
+    static boolean check(int x, int y, int z, int t){
+        if()
+    }
+}
