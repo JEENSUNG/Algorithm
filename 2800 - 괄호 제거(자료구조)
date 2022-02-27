@@ -1,0 +1,59 @@
+import java.lang.reflect.Array;
+import java.util.*;
+class Point{
+    int start;
+    int end;
+    Point(int start, int end){
+        this.start = start;
+        this.end = end;
+    }
+}
+class Main {
+    static ArrayList<Point> list = new ArrayList<Point>();
+    static char[] arr;
+    static TreeSet<String> set = new TreeSet<>();
+    static boolean[] visit;
+    static boolean isFirst = true;
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        StringBuilder sb = new StringBuilder();
+        Stack<Integer> stack = new Stack<>();
+        arr = scan.next().toCharArray();
+        for(int i = 0; i < arr.length; i++){
+            char c = arr[i];
+            if(c == '(')
+                stack.push(i);
+            else if(c == ')')
+                list.add(new Point(stack.pop(), i));
+        }
+        visit = new boolean[arr.length];
+        Arrays.fill(visit, true);
+        dfs(0);
+        for(String s : set)
+            sb.append(s).append('\n');
+        System.out.println(sb);
+    }
+    static void dfs(int depth){
+        if(depth == list.size()){
+            if(isFirst){
+                isFirst = false;
+            }else{
+                StringBuilder sb = new StringBuilder();
+                for(int i = 0; i < arr.length; i++){
+                    if(visit[i])
+                        sb.append(arr[i]);
+                }
+                set.add(sb.toString());
+            }
+            return;
+        }
+        Point now = list.get(depth);
+        visit[now.start] = true;
+        visit[now.end] = true;
+        dfs(depth + 1);
+
+        visit[now.start] = false;
+        visit[now.end] = false;
+        dfs(depth + 1);
+    }
+}
