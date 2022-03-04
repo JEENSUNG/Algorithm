@@ -1,0 +1,42 @@
+package com.core.hello;
+import java.util.*;
+public class Main{
+    static int n;
+    static int[][] arr;
+    static int[][] ans;
+    public static void main(String[] args){
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        arr = new int[n][n];
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                arr[i][j] = scan.nextInt();
+            }
+        }
+        dfs(n,n);
+    }
+    static void dfs(int a, int b){
+        ans = new int[a/2][b/2];
+        for(int i = 0; i < a/2; i++){
+            for(int j = 0; j < b/2; j++){
+                ans[i][j] = check(2 * i,2 * j);
+            }
+        }
+        if(a / 2 == 1 && b / 2 == 1){
+            System.out.println(ans[0][0]);
+        }else {
+            arr = new int[a/2][b/2];
+            arr = ans.clone();
+            dfs(a / 2, b / 2);
+        }
+    }
+    static int check(int x, int y){
+        ArrayList<Integer> list = new ArrayList<>();
+        for(int i = x; i < x + 2; i++)
+            for(int j = y; j < y + 2; j++) {
+                list.add(arr[i][j]);
+            }
+        Collections.sort(list);
+        return list.get(2);
+    }
+}
