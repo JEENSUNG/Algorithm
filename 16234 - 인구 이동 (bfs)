@@ -1,0 +1,102 @@
+package com.core.hello;
+import java.awt.*;
+import java.util.*;
+class Main{
+    static int n,l,r;
+    static int[][] arr;
+    static int[] dx = {-1,0,1,0};
+    static int[] dy = {0,1,0,-1};
+    static boolean[][] visit;
+    static int day = 0;
+    static Queue<Point> queue = new LinkedList<>();
+    static Queue<Point> q = new LinkedList<>();
+    static ArrayList<Integer> list = new ArrayList<>();
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt(); l = scan.nextInt(); r = scan.nextInt();
+        arr = new int[n][n];
+        visit = new boolean[n][n];
+        for(int i = 0; i < n; i++)
+            for(int j = 0; j < n; j++)
+                arr[i][j] = scan.nextInt();
+        if(check())
+            dfs();
+        else {
+            System.out.println(0);
+            System.exit(0);
+        }
+        System.out.println(day);
+    }
+    static void dfs(){
+        list = new ArrayList<>();
+        visit = new boolean[n][n];
+        queue = new LinkedList<>();
+        for(int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if(visit[i][j])
+                    continue;
+                else {
+                    queue.offer(new Point(i, j));
+                    q.offer(new Point(i,j));
+                    visit[i][j] = true;
+                    list.add(arr[i][j]);
+                    while (!queue.isEmpty()) {
+                        Point now = queue.poll();
+                        for (int t = 0; t < 4; t++) {
+                            int nx = now.x + dx[t];
+                            int ny = now.y + dy[t];
+                            if (nx < 0 || ny < 0 || nx >= n || ny >= n) {
+                                continue;
+                            }
+                            if (!visit[nx][ny]) {
+                                if (Math.abs(arr[now.x][now.y] - arr[nx][ny]) >= l &&
+                                        Math.abs(arr[now.x][now.y] - arr[nx][ny]) <= r) {
+                                    queue.offer(new Point(nx,ny));
+                                    q.offer(new Point(nx,ny));
+                                    list.add(arr[nx][ny]);
+                                    visit[nx][ny] = true;
+                                }
+                            }
+                        }
+                    }
+                }
+                if(list.size() > 0)
+                    search();
+                list = new ArrayList<>();
+                queue = new LinkedList<>();
+            }
+        }
+        if(check()){
+            dfs();
+        }
+        day++;
+    }
+    static void search(){
+        int size = list.size();
+        int sum = 0;
+        for(int i = 0; i < size; i++){
+            sum += list.get(i);
+        }
+        int num = sum / size;
+        while(!q.isEmpty()){
+            Point now = q.poll();
+            arr[now.x][now.y] = num;
+        }
+    }
+    static boolean check(){
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                for(int t = 0; t < 4; t++){
+                    int nx = i + dx[t];
+                    int ny = j + dy[t];
+                    if(nx < 0 || ny < 0 || nx >= n || ny >= n)
+                        continue;
+                    if(Math.abs(arr[i][j] - arr[nx][ny]) >= l &&
+                    Math.abs(arr[i][j] - arr[nx][ny]) <= r)
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
+}
