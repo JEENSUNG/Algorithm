@@ -1,0 +1,71 @@
+package com.core.hello;
+import java.util.*;
+class Point{
+    int x;
+    int y;
+    int gram;
+    int sum;
+    Point(int x, int y, int gram,int sum){
+        this.x = x;
+        this.y = y;
+        this.gram = gram;
+        this.sum = sum;
+    }
+}
+class Main{
+    static int n,m,t;
+    static int[] dx = {-1,0,1,0};
+    static int[] dy = {0,1,0,-1};
+    static boolean[][][] visit;
+    static int[][] arr;
+    static boolean isOk = false;
+    static int MAX = Integer.MAX_VALUE;
+    static boolean end = false;
+    static Queue<Point> queue = new LinkedList<>();
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        m = scan.nextInt();
+        t = scan.nextInt();
+        arr = new int[n][m];
+        visit = new boolean[n][m][2];
+        for(int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                arr[i][j] = scan.nextInt();
+            }
+        }
+        bfs();
+        if(MAX == Integer.MAX_VALUE || MAX > t)
+            System.out.println("Fail");
+        else
+            System.out.println(MAX);
+    }
+    static void bfs(){
+        queue.offer(new Point(0,0,0,0));
+        visit[0][0][0] = true;
+        while(!queue.isEmpty()){
+            Point now = queue.poll();
+            if(arr[now.x][now.y] == 2)
+                now.gram = 1;
+            if(now.x == n - 1 && now.y == m - 1) {
+                MAX = Math.min(now.sum, MAX);
+                break;
+            }
+            int nx, ny;
+            for(int i = 0; i < 4; i++){
+                nx = now.x + dx[i];
+                ny = now.y + dy[i];
+                if(nx < 0 || ny < 0 || nx >= n || ny >= m)
+                    continue;
+                if(visit[nx][ny][now.gram])
+                    continue;
+                if(now.gram == 0){
+                    if(arr[nx][ny] == 1)
+                        continue;
+                }
+                queue.offer(new Point(nx,ny,now.gram,now.sum + 1));
+                visit[nx][ny][now.gram] = true;
+            }
+        }
+    }
+}
