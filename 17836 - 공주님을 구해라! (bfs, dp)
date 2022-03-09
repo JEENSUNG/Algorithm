@@ -34,6 +34,7 @@ class Main{
             }
         }
         bfs();
+        //MAX가 안건드려졌을 땐 아무리 탐색해도 끝점에 도달하지 못했다는 뜻
         if(MAX == Integer.MAX_VALUE || MAX > t)
             System.out.println("Fail");
         else
