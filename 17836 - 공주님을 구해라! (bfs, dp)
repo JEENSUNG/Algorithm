@@ -17,9 +17,7 @@ class Main{
     static int[] dy = {0,1,0,-1};
     static boolean[][][] visit;
     static int[][] arr;
-    static boolean isOk = false;
     static int MAX = Integer.MAX_VALUE;
-    static boolean end = false;
     static Queue<Point> queue = new LinkedList<>();
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
