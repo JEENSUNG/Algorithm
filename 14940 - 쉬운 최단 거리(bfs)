@@ -29,46 +29,40 @@ class Main{
 
         for(int i = 0; i < n; i++){
             for(int j = 0; j < m; j++){
-                if(arr[i][j] == 1)
-                    ans[i][j] = bfs(i,j);
-                else if(arr[i][j] == 0)
-                    ans[i][j] = 0;
+                if(arr[i][j] == 2) {
+                    arr[i][j] = 0;
+                    queue.offer(new Node(i, j, 0));
+                }
             }
         }
+        bfs();
         for(int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
+                if(arr[i][j] == 1)
+                    ans[i][j] = -1;
                 System.out.print(ans[i][j] + " ");
             }
             System.out.println();
         }
     }
-    static int bfs(int x, int y){
-        MIN = Integer.MAX_VALUE;
-        queue = new LinkedList<>();
-        queue.offer(new Node(x,y,0));
-        visit = new boolean[n][m];
-        visit[x][y] = true;
+    static void bfs(){
         while(!queue.isEmpty()){
-            Node now = queue.poll();
-            if(arr[now.x][now.y] == 2){
-                MIN = Math.min(MIN, now.d);
-                return MIN;
-            }
-            int nx,ny;
-            for(int i = 0; i < 4; i++){
-                nx = now.x + dx[i];
-                ny = now.y + dy[i];
-                if(nx < 0 || ny < 0 || nx >= n || ny >= m)
-                    continue;
-                if(visit[nx][ny])
-                    continue;
-                if(arr[nx][ny] == 0)
-                    continue;
-                queue.offer(new Node(nx,ny,now.d + 1));
-                visit[nx][ny] = true;
+            int size = queue.size();
+            for(int i = 0; i < size; i++){
+                Node now = queue.poll();
+                ans[now.x][now.y] = now.d;
+                for(int j = 0; j < 4; j++){
+                    int nx = now.x + dx[j];
+                    int ny = now.y + dy[j];
+                    if(nx < 0 || ny < 0 || nx >= n || ny >= m)
+                        continue;
+                    if(arr[nx][ny] == 1){
+                        arr[nx][ny] = 0;
+                        queue.offer(new Node(nx,ny,now.d + 1));
+                    }
+                }
             }
         }
-        return -1;
     }
 }
 class Node{
