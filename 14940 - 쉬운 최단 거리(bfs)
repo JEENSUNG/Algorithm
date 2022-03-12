@@ -17,7 +17,6 @@ class Main{
         m = Integer.parseInt(st.nextToken());
         arr = new int[n][m];
         ans = new int[n][m];
-        visit = new boolean[n][m];
         for(int i = 0; i < n; i++){
             st = new StringTokenizer(br.readLine());
             for(int j = 0; j < m; j++) {
