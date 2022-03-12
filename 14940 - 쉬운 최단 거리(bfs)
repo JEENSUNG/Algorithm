@@ -9,8 +9,6 @@ class Main{
     static int[][] ans;
     static int[] dx = {-1,0,1,0};
     static int[] dy = {0,1,0,-1};
-    static int MIN = Integer.MAX_VALUE;
-    static boolean[][] visit;
     static Queue<Node> queue = new LinkedList<>();
     public static void main(String[]args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
