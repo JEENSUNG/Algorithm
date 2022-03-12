@@ -1,0 +1,50 @@
+package com.core.hello;
+
+import java.util.*;
+class Direction{
+    int x;
+    int dist;
+    Direction(int x, int dist){
+        this.x = x;
+        this.dist = dist;
+    }
+}
+class Main{
+    static int n,m;
+    static int[] dx = {-1,1};
+    static HashSet<Integer> hash;
+    static Queue<Direction> queue = new LinkedList<>();
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        m = scan.nextInt();
+        hash = new HashSet<>();
+        for(int i = 0; i < n; i++){
+            int x = scan.nextInt();
+            queue.offer(new Direction(x, 0));
+            hash.add(x);
+        }
+        System.out.println(bfs());
+    }
+    static long bfs(){
+        long sum = 0;
+        int index = 0;
+        out:while(!queue.isEmpty()){
+            Direction now = queue.poll();
+            for(int i = 0; i < 2; i++){
+                int nx = now.x + dx[i];
+                if(nx < -1000000000 || nx > 1000000000)
+                    continue;
+                if(hash.contains(nx))
+                    continue;
+                index++;
+                sum += now.dist + 1;
+                if(index == m)
+                    break out;
+                hash.add(nx);
+                queue.offer(new Direction(nx,now.dist + 1));
+            }
+        }
+        return sum;
+    }
+}
