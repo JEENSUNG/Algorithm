@@ -2,75 +2,36 @@ package com.core.hello;
 
 import java.util.*;
 class Main{
-    static int n;
-    static int[][] arr;
+    static int[] arr;
+    static int n, last;
     static boolean[] visit;
-    static boolean[] visit2;
-    static int sum = 0;
-    static int temp = 0;
-    static Queue<Integer> queue = new LinkedList<>();
-    static HashSet<Integer> hash = new HashSet<>();
-    static ArrayList<Integer> list = new ArrayList<>();
+    static ArrayList<Integer> list;
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
         n = scan.nextInt();
-        arr = new int[n + 1][n + 1];
+        arr = new int[n + 1];
         visit = new boolean[n + 1];
-        visit2 = new boolean[n + 1];
-        for(int i = 1; i <= n; i++) {
-            int x = scan.nextInt();
-            arr[i][x] = arr[x][i] = 1;
-            if(i == x){
-                visit[i] = true;
-                arr[x][i] = arr[i][x] = 0;
-                hash.add(i);
-                sum++;
-            }
-        }
-        //입력 끝
-        int t;
-        for(int i = 1; i <= n; i++){
-            if(!visit[i]){
-                t = dfs(i);
-                if(temp < t){
-                    temp = t;
-                }
-            }
-        }
-        hash.addAll(list);
-        System.out.println(temp);
-        for (Integer integer : hash) {
-            System.out.println(integer);
-        }
-    }
-    static int dfs(int x){
-        temp = 0;
-        visit2 = new boolean[n + 1];
         list = new ArrayList<>();
-        queue = new LinkedList<>();
-        visit2[x] = true;
-        queue.offer(x);
-        boolean isOk = false;
-        while(!queue.isEmpty()){
-            Integer now = queue.poll();
-            list.add(now);
-            if(now == x)
-                isOk = !isOk;
-            for(int i = 1; i <= n; i++){
-                if(visit2[i])
-                    continue;
-                if(arr[now][i] == 1){
-                    visit2[i] = true;
-                    queue.offer(i);
-                }
-            }
-        }
-        if(isOk)
-            return 0;
+        for(int i = 1; i <= n; i++)
+            arr[i] = scan.nextInt();
         for(int i = 1; i <= n; i++){
-            if(visit2[i])
-                temp++;
+            visit[i] = true;
+            last = i;
+            dfs(i);
+            visit[i] = false;
         }
-        return temp;
+        Collections.sort(list);
+        System.out.println(list.size());
+        for(int e : list)
+            System.out.println(e);
+    }
+    static void dfs(int x){
+        if(!visit[arr[x]]){
+            visit[arr[x]] = true;
+            dfs(arr[x]);
+            visit[arr[x]] = false;
+        }
+        if(arr[x] == last)
+            list.add(last);
     }
 }
