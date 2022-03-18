@@ -1,0 +1,79 @@
+package com.core.hello;
+import java.util.*;
+class Point{
+    int x;
+    int y;
+    int count;
+    int k;
+    Point(int x, int y, int count, int k){
+        this.x = x;
+        this.y = y;
+        this.count = count;
+        this.k = k;
+    }
+}
+class Main{
+    static int k;
+    static int w, h;
+    static int[][] arr;
+    static boolean[][][] visit;
+    static int min = Integer.MAX_VALUE;
+    static int[][] dir = {{-1,0}, {1,0}, {0,1}, {0,-1}};
+    static int[][] cross = {{-2,1}, {-1,2}, {1,2}, {2,1}, {2,-1}, {1,-2}, {-1,-2}, {-2,-1}};
+    static Queue<Point> queue = new LinkedList<>();
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        k = scan.nextInt();
+        w = scan.nextInt();
+        h = scan.nextInt();
+        arr = new int[h][w];
+        visit = new boolean[h][w][k + 1];
+        for(int i = 0; i < h; i++){
+            for(int j = 0; j < w; j++){
+                arr[i][j] = scan.nextInt();
+            }
+        }
+        bfs();
+        if(min == Integer.MAX_VALUE)
+            System.out.println(-1);
+        else
+            System.out.println(min);
+    }
+    static void bfs() {
+        queue.offer(new Point(0, 0,0,k));
+        visit[0][0][k] = true;
+        while (!queue.isEmpty()) {
+            Point now = queue.poll();
+            if(now.x == h - 1 && now.y == w - 1) {
+                min = now.count;
+                break;
+            }
+            for(int i = 0; i < 4; i++){
+                int nx = now.x + dir[i][0];
+                int ny = now.y + dir[i][1];
+                if(nx < 0 || ny < 0 || nx >= h || ny >= w)
+                    continue;
+                if(visit[nx][ny][now.k])
+                    continue;
+                if(arr[nx][ny] == 1)
+                    continue;
+                visit[nx][ny][now.k] = true;
+                queue.offer(new Point(nx,ny,now.count + 1, now.k));
+            }
+            if(now.k > 0){
+                for(int i = 0; i < 8; i++){
+                    int nx = now.x + cross[i][0];
+                    int ny = now.y + cross[i][1];
+                    if(nx < 0 || ny < 0 || nx >= h || ny >= w)
+                        continue;
+                    if(visit[nx][ny][now.k - 1])
+                        continue;
+                    if(arr[nx][ny] == 1)
+                        continue;
+                    visit[nx][ny][now.k - 1] = true;
+                    queue.offer(new Point(nx,ny,now.count + 1, now.k - 1));
+                }
+            }
+        }
+    }
+}
