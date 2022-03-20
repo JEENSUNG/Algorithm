@@ -1,0 +1,74 @@
+package com.core.hello;
+import java.util.*;
+class Point{
+    int x;
+    int y;
+    int time;
+    Point(int x, int y, int time){
+        this.x = x;
+        this.y = y;
+        this.time = time;
+    }
+}
+class Main{
+    static int n, m, h, w;
+    static int[] ans = new int[4];
+    static int[][] arr;
+    static int[][] dir = {{-1,0}, {1,0}, {0,1}, {0,-1}};
+    static boolean[][] visit;
+    static int min = Integer.MAX_VALUE;
+    static Queue<Point> queue = new LinkedList<>();
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        m = scan.nextInt();
+        arr = new int[n][m];
+        visit = new boolean[n][m];
+        for(int i = 0; i < n; i++)
+            for(int j = 0; j < m; j++)
+                arr[i][j] = scan.nextInt();
+        h = scan.nextInt();
+        w = scan.nextInt();
+        for(int i = 0; i < 4; i++)
+            ans[i] = scan.nextInt() - 1;
+        bfs();
+        if(min == Integer.MAX_VALUE)
+            System.out.println(-1);
+        else
+            System.out.println(min);
+    }
+    static void bfs(){
+        queue.offer(new Point(ans[0],ans[1], 0));
+        visit[ans[0]][ans[1]] = true;
+        while(!queue.isEmpty()){
+            Point now = queue.poll();
+            if(now.x == ans[2] && now.y == ans[3]){
+                min = Math.min(min, now.time);
+                break;
+            }
+            for(int i = 0; i < 4; i++){
+                int nx = now.x + dir[i][0];
+                int ny = now.y + dir[i][1];
+                if(nx < 0 || ny < 0 || nx >= n || ny >= m)
+                    continue;
+                if(visit[nx][ny])
+                    continue;
+                if(!check(nx,ny))
+                    continue;
+                queue.offer(new Point(nx,ny,now.time + 1));
+                visit[nx][ny] = true;
+            }
+        }
+    }
+    static boolean check(int x, int y){
+        for(int i = x; i < x + h; i++){
+            for(int j = y; j < y + w; j++){
+                if(i >= n || j >= m)
+                    return false;
+                if(arr[i][j] == 1)
+                    return false;
+            }
+        }
+        return true;
+    }
+}
