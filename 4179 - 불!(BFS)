@@ -1,0 +1,97 @@
+import java.util.*;
+class Point{
+    int x;
+    int y;
+    Point(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
+}
+class Main{
+    static int n, m;
+    static int[][] arr;
+    static boolean[][] visit;
+    static boolean[][] visit2;
+    static int dir[][] = {{-1,0}, {0,1}, {1,0}, {0,-1}};
+    static Queue<Point> queue = new LinkedList<>();
+    static Queue<Point> fire = new LinkedList<>();
+    static int time = 0;
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        m = scan.nextInt();
+        arr = new int[n][m];
+        visit = new boolean[n][m];
+        visit2 = new boolean[n][m];
+        for(int i = 0; i < n; i++){
+            String str = scan.next();
+            for(int j = 0; j < m; j++){
+                if(str.charAt(j) == '#'){
+                    arr[i][j] = 1;
+                }else if(str.charAt(j) == 'J') {
+                    queue.offer(new Point(i, j));
+                    arr[i][j] = 0;
+                    visit[i][j] = true;
+                }else if(str.charAt(j) == 'F') {
+                    fire.offer(new Point(i,j));
+                    arr[i][j] = -1;
+                    visit2[i][j] = true;
+                }
+                else
+                    arr[i][j] = 0;
+            }
+        }
+        while(true){
+            time++;
+            if(queue.size() == 0) {
+                System.out.println("IMPOSSIBLE");
+                break;
+            }
+            boom();
+            bfs();
+        }
+    }
+    static void bfs(){
+        int size = queue.size();
+        for(int k = 0; k < size; k++){
+            Point now = queue.poll();
+            for(int i = 0; i < 4; i++){
+                int nx = now.x + dir[i][0];
+                int ny = now.y + dir[i][1];
+                if(nx < 0 || ny < 0 || nx >= n || ny >= m){
+                    System.out.println(time);
+                    System.exit(0);
+                }
+                if(arr[nx][ny] == 1)
+                    continue;
+                if(arr[nx][ny] == -1)
+                    continue;
+                if(visit[nx][ny])
+                    continue;
+                queue.offer(new Point(nx,ny));
+                visit[nx][ny] = true;
+            }
+        }
+    }
+    static void boom(){
+        int size = fire.size();
+        for(int k = 0; k < size; k++){
+            Point now = fire.poll();
+            for(int i = 0; i < 4; i++){
+                int nx = now.x + dir[i][0];
+                int ny = now.y + dir[i][1];
+                if(nx < 0 || ny < 0 || nx >= n || ny >= m)
+                    continue;
+                if(arr[nx][ny] == 1)
+                    continue;
+                if(visit2[nx][ny])
+                    continue;
+                if(arr[nx][ny] == 0){
+                    fire.offer(new Point(nx,ny));
+                    arr[nx][ny] = -1;
+                    visit2[nx][ny] = true;
+                }
+            }
+        }
+    }
+}
