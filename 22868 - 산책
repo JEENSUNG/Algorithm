@@ -1,0 +1,74 @@
+package com.core.hello;
+import java.util.*;
+class Main{
+    static int n, m;
+    static int s, e;
+    static ArrayList<Integer>[] list;
+    static int[] arr;
+    static boolean[] visit;
+    static int answer = 0;
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        m = scan.nextInt();
+        list = new ArrayList[n + 1];
+        arr = new int[n + 1];
+        for(int i = 0; i <= n; i++){
+            list[i] = new ArrayList<>();
+        }
+        visit = new boolean[n + 1];
+        for(int i = 0; i < m; i++){
+            int x = scan.nextInt();
+            int y = scan.nextInt();
+            list[x].add(y);
+            list[y].add(x);
+        }
+
+        s = scan.nextInt();
+        e = scan.nextInt();
+        pro();
+        System.out.println(answer);
+    }
+    static void pro(){
+        for(int i = 1; i<= n; i++){
+            Collections.sort(list[i]);
+        }
+        bfs(s,e);
+        for(int i = 1; i <= n; i++){
+            visit[i] = false;
+        }
+        int last = arr[e];
+        while(last > 0){
+            visit[last] = true;
+            last = arr[last];
+        }
+        bfs(e,s);
+    }
+    static void bfs(int x, int y){
+        Queue<Node> queue = new LinkedList<>();
+        queue.offer(new Node(x, 0));
+        visit[x] = true;
+        while(!queue.isEmpty()){
+            Node now = queue.poll();
+            for(int i : list[now.idx]){
+                if(!visit[i]){
+                    visit[i] = true;
+                    arr[i] = now.idx;
+                    queue.offer(new Node(i,now.cnt + 1));
+                }
+                if(i == y){
+                    answer += now.cnt + 1;
+                    return;
+                }
+            }
+        }
+    }
+    static class Node{
+        int idx;
+        int cnt;
+        Node(int idx, int cnt){
+            this.idx = idx;
+            this.cnt = cnt;
+        }
+    }
+}
