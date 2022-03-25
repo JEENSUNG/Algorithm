@@ -1,0 +1,57 @@
+package com.core.hello;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+class P{
+    int x;
+    int time;
+    P(int x, int time){
+        this.x = x;
+        this.time = time;
+    }
+}
+class Main{
+    static int n, k;
+    static int t = Integer.MAX_VALUE;
+    static int answer = 1;
+    static boolean[] visit = new boolean[100001];
+    static Queue<P> queue = new LinkedList<>();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        n = Integer.parseInt(st.nextToken());
+        k = Integer.parseInt(st.nextToken());
+        if(n > k){
+            System.out.println(n - k);
+            System.out.println(1);
+        }else {
+            bfs();
+            System.out.println(t);
+            System.out.println(answer);
+        }
+    }
+    static void bfs(){
+        queue.offer(new P(n, 0));
+        visit[n] = true;
+        while(!queue.isEmpty()){
+            P now = queue.poll();
+            visit[now.x] = true;
+            if(t < now.time)
+                return;
+            if(now.x == k){
+                if(t > now.time)
+                    t = now.time;
+                else answer++;
+                continue;
+            }
+            if(now.x + 1 <= 100000 && !visit[now.x + 1]){
+                queue.offer(new P(now.x + 1, now.time + 1));
+            }if(now.x - 1 >= 0 && !visit[now.x - 1]){
+                queue.offer(new P(now.x - 1, now.time + 1));
+            }if(now.x * 2 <= 100000 && !visit[now.x * 2]){
+                queue.offer(new P(now.x * 2, now.time + 1));
+            }
+        }
+    }
+}
