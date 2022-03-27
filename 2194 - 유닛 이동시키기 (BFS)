@@ -1,0 +1,85 @@
+package com.core.hello;
+
+import java.util.*;
+class Point{
+    int x;
+    int y;
+    int d;
+    Point(int x, int y, int d){
+        this.x = x;
+        this.y = y;
+        this.d = d;
+    }
+}
+class Main{
+    static int n, m, a, b, k;
+    static int startX, startY, endX, endY;
+    static int[][] arr;
+    static int min = Integer.MAX_VALUE;
+    static boolean[][] visit;
+    static int[][] dir = {{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
+    static Queue<Point> queue = new LinkedList<>();
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        m = scan.nextInt();
+        a = scan.nextInt();
+        b = scan.nextInt();
+        k = scan.nextInt();
+        arr = new int[n + 1][m + 1];
+        visit = new boolean[n + 1][m + 1];
+        for(int i = 0; i < k; i++){
+            int x = scan.nextInt();
+            int y = scan.nextInt();
+            arr[x][y] = 1;
+        }
+        startX = scan.nextInt();
+        startY = scan.nextInt();
+        endX = scan.nextInt();
+        endY = scan.nextInt();
+        bfs();
+        if(min == Integer.MAX_VALUE)
+            System.out.println(-1);
+        else
+            System.out.println(min);
+    }
+    static void bfs(){
+        queue.offer(new Point(startX, startY, 0));
+        visit[startX][startY] = true;
+        if(check(startX, startY)) {
+            System.out.println(-1);
+            System.exit(0);
+        }
+        while (!queue.isEmpty()) {
+            Point now = queue.poll();
+            if(now.x == endX && now.y == endY) {
+                min = now.d;
+                break;
+            }
+            for(int i = 0; i < 4; i++){
+                int nx = now.x + dir[i][0];
+                int ny = now.y + dir[i][1];
+                if(nx <= 0 || ny <= 0 || nx + a - 1 > n || ny + b - 1 > m)
+                    continue;
+                if(visit[nx][ny])
+                    continue;
+                if(dis(nx,ny))
+                    continue;
+                queue.offer(new Point(nx, ny, now.d + 1));
+                visit[nx][ny] = true;
+            }
+        }
+    }
+    static boolean check(int x, int y){
+        return x + a - 1 > n || y + b - 1 > m;
+    }
+    static boolean dis(int x, int y){
+        for(int i = x; i < x + a; i++){
+            for(int j = y; j < y + b; j++){
+                if(arr[i][j] == 1)
+                    return true;
+            }
+        }
+        return false;
+    }
+}
