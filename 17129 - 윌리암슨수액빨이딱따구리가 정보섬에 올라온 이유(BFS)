@@ -1,4 +1,3 @@
-package com.core.hello;
 import java.util.*;
 class Main{
     static class Point{
