@@ -1,0 +1,45 @@
+package com.core.hello;
+import java.util.*;
+class Main{
+    static int n, t;
+    static int[] arr;
+    static int count;
+    static boolean[] visit;
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        arr = new int[n];
+        visit = new boolean[n];
+        int root = 0;
+        for(int i = 0; i < n; i++){
+            arr[i] = scan.nextInt();
+            if(arr[i] == -1)
+                root = i;
+        }
+        t = scan.nextInt();
+        arr[t] = -2;
+        delete(t);
+        dfs(root);
+        System.out.println(count);
+    }
+    static void delete(int x){
+        arr[x] = -2;
+        for(int i = 0; i < n; i++){
+            if(arr[i] == x)
+                delete(i);
+        }
+    }
+    static void dfs(int x){
+        visit[x] = true;
+        if(arr[x] != -2){
+            for(int i = 0; i < n; i++){
+                if(arr[i] == x && !visit[i]){
+                    dfs(i);
+                    visit[x] = false;
+                }
+            }
+            if(visit[x])
+                count++;
+        }
+    }
+}
