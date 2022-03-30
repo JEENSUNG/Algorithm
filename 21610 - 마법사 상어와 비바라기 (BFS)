@@ -1,0 +1,80 @@
+package com.core.hello;
+import java.util.*;
+class Point {
+    int x;
+    int y;
+    Point(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+}
+class Main{
+    static int n, m;
+    static int[][] dir = {{-1, 0}, {-1, -1}, {0, -1}, {1, -1}, {1, 0}, {1, 1}, {0, 1}, {-1, 1}};
+    static int[][] arr;
+    static boolean[][] visit;
+    static Queue<Point> queue = new LinkedList<>();
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        m = scan.nextInt();
+        arr = new int[n][n];
+        visit = new boolean[n][n];
+        for(int i = 0; i < n; i++)
+            for(int j = 0; j < n; j++)
+                arr[i][j] = scan.nextInt();
+        queue.offer(new Point(n - 1, 0));
+        queue.offer(new Point(n - 1, 1));
+        queue.offer(new Point(n - 2, 0));
+        queue.offer(new Point(n - 2, 1));
+        while (m-- > 0) {
+            int x = scan.nextInt() - 1;
+            int y = scan.nextInt();
+            move(x, y);
+            increase();
+            last();
+        }
+        int answer = 0;
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                if(arr[i][j] > 0)
+                    answer += arr[i][j];
+            }
+        }
+        System.out.println(answer);
+    }
+    static void move(int a, int b){
+        for(Point now : queue){
+            now.x = (n + now.x + dir[a][1] * (b % n)) % n;
+            now.y = (n + now.y + dir[a][0] * (b % n)) % n;
+            arr[now.x][now.y]++;
+        }
+    }
+    static void increase(){
+        while (!queue.isEmpty()) {
+            Point now = queue.poll();
+            visit[now.x][now.y] = true;
+            int cnt = 0;
+            for(int i = 1; i <= 7; i +=2){
+                int nx = now.x + dir[i][1];
+                int ny = now.y + dir[i][0];
+                if(nx < 0 || ny < 0 || nx >= n || ny >= n)
+                    continue;
+                if(arr[nx][ny] > 0)
+                    cnt++;
+            }
+            arr[now.x][now.y] += cnt;
+        }
+    }
+    static void last(){
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                if(!visit[i][j] && arr[i][j] >= 2){
+                    queue.offer(new Point(i, j));
+                    arr[i][j] -= 2;
+                }
+            }
+        }
+        visit = new boolean[n][n];
+    }
+}
