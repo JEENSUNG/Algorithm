@@ -13,7 +13,6 @@ class Main{
     static int[][] dir = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
     static int[][] arr;
     static int[][] ans;
-    static boolean[][] visit;
     static Queue<Point> queue = new LinkedList<>();
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
@@ -22,7 +21,6 @@ class Main{
         t = scan.nextInt();
         arr = new int[n][m];
         ans = new int[n][m];
-        visit = new boolean[n][m];
         for(int i = 0; i < n; i++){
             for(int j = 0; j < m; j++){
                 arr[i][j] = scan.nextInt();
@@ -32,6 +30,7 @@ class Main{
         }
         while(t--> 0){
             move();
+            ans = new int[n][m];
             clean();
         }
         int answer = 0;
@@ -49,10 +48,11 @@ class Main{
                 }
             }
         }
-        for(int i = 0; i < n; i++)
-            for(int j = 0; j < m; j++)
-                if(arr[i][j] > 0)
-                    arr[i][j] += ans[i][j];
+        for(int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                arr[i][j] += ans[i][j];
+            }
+        }
     }
     static void check(int x, int y){
         int count = 0;
@@ -74,20 +74,21 @@ class Main{
             arr[i][0] = arr[i - 1][0];
         for(int i = 0; i < m - 1; i++)
             arr[0][i] = arr[0][i + 1];
-        for(int i = 0; i < now.x - 1; i++)
+        for(int i = 0; i < now.x; i++)
             arr[i][m - 1] = arr[i + 1][m - 1];
         for(int i = m - 1; i > 1; i--)
             arr[now.x][i] = arr[now.x][i - 1];
-
+        arr[now.x][1] = 0;
         Point now2 = queue.poll();
         for (int i = now2.x + 1; i < n - 1; i++)
             arr[i][0] = arr[i + 1][0];
         for (int i = 0; i < m - 1; i++)
             arr[n - 1][i] = arr[n - 1][i + 1];
-        for(int i = n - 1; i > now2.x + 1; i--)
+        for(int i = n - 1; i > now2.x; i--)
             arr[i][m - 1] = arr[i - 1][m - 1];
         for(int i = m - 1; i > 1; i--)
             arr[now2.x][i] = arr[now2.x][i - 1];
+        arr[now2.x][1] = 0;
         queue.offer(new Point(now.x, now.y));
         queue.offer(new Point(now2.x, now2.y));
     }
