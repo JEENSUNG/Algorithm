@@ -1,0 +1,59 @@
+package com.core.hello;
+import java.lang.reflect.Array;
+import java.util.*;
+class Fireball{
+    int x, y, m, s, d;
+    Fireball(int x, int y, int m, int s, int d){
+        this.x = x;
+        this.y = y;
+        this.m = m;
+        this.s = s;
+        this.d = d;
+    }
+}
+class Main{
+    static int n, m, k;
+    static ArrayList<Fireball>[][] arr;
+    static Queue<Fireball> queue = new LinkedList<>();
+    static int[][] dir = {{-1, 0}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}};
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        m = scan.nextInt();
+        k = scan.nextInt();
+        arr = new ArrayList[n][n];
+        for(int i = 0; i < n; i++)
+            for(int j = 0; j < n; j++)
+                arr[i][j] = new ArrayList<Fireball>();
+        while(m-- > 0){
+            int r = scan.nextInt() - 1;
+            int c = scan.nextInt() - 1;
+            int m = scan.nextInt();
+            int s = scan.nextInt();
+            int d = scan.nextInt();
+            queue.offer(new Fireball(r, c, m, s, d));
+        }
+        while(k--> 0){
+            move();
+            check();
+        }
+    }
+    static void move(){
+        for(Fireball now : queue){
+            now.x = (now.x + n + (dir[now.d][0] * now.s) % n) % n;
+            now.y = (now.y + n + (dir[now.d][1] * now.s) % n) % n;
+            arr[now.x][now.y].add(now);
+        }
+    }
+    static void check(){
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                if(arr[i][j].size() == 1)
+                    arr[i][j].clear();
+                if(arr[i][j].size() < 2)
+                    continue;
+                
+            }
+        }
+    }
+}
