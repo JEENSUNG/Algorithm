@@ -52,7 +52,22 @@ class Main{
                     arr[i][j].clear();
                 if(arr[i][j].size() < 2)
                     continue;
-                
+                int mSum = 0, sSum = 0;
+                boolean even = arr[i][j].get(0).d % 2 == 0;
+                boolean odd = arr[i][j].get(0).d % 2 == 1;
+                for(Fireball now : arr[i][j]){
+                    mSum += now.m;
+                    sSum += now.s;
+                    even = even & now.d % 2 == 0;
+                    odd = odd & now.d % 2 == 1;
+                    queue.remove(now);
+                }
+                int newMSum = mSum / 5;
+                int size = arr[i][j].size();
+                arr[i][j].clear();
+                if(newMSum == 0)
+                    continue;
+                int 
             }
         }
     }
