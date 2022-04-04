@@ -1,0 +1,57 @@
+package com.core.hello;
+import java.util.*;
+
+class Point{
+    int x,y,d;
+    Point(int x, int y, int d){
+        this.x = x;
+        this.y = y;
+        this.d = d;
+    }
+}
+class Main{
+    static int n;
+    static int[] curve = {1, 2, 3, 0};
+    static int[][] dir = {{0, 1}, {-1, 0}, {0, -1}, {1, 0}};
+    static boolean[][] visit = new boolean[101][101];
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        while(n--> 0){
+            int x = scan.nextInt();
+            int y = scan.nextInt();
+            int d = scan.nextInt();
+            int g = scan.nextInt();
+
+            move(x,y,d,g);
+        }
+        int cnt = 0;
+        for(int i = 0; i < 100; i++){
+            for(int j = 0; j < 100; j++){
+                if (visit[i][j] && visit[i + 1][j] && visit[i][j + 1] && visit[i + 1][j + 1]) {
+                    cnt++;
+                }
+            }
+        }
+        System.out.println(cnt);
+    }
+    static void move(int x, int y, int d, int g){
+        visit[y][x] = true;
+        int nx = x + dir[d][1];
+        int ny = y + dir[d][0];
+        int endD = curve[d];
+        visit[ny][nx] = true;
+        List<Point> list = new ArrayList<>();
+        list.add(new Point(ny, nx, endD));
+        for(int i = 0; i < g; i++){
+            for(int j = list.size() - 1; j >= 0; j--){
+                Point last = list.get(j);
+                nx += dir[last.d][1];
+                ny += dir[last.d][0];
+                endD = curve[last.d];
+                visit[ny][nx] = true;
+                list.add(new Point(ny, nx, endD));
+            }
+        }
+    }
+}
