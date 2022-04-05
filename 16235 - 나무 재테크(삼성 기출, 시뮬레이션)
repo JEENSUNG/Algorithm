@@ -1,0 +1,88 @@
+package com.core.hello;
+import java.util.*;
+class Main{
+    static class Tree implements Comparable<Tree>{
+        int x,y,age;
+        Tree(int x, int y, int age){
+            this.x = x;
+            this.y = y;
+            this.age = age;
+        }
+        @Override
+        public int compareTo(Tree o){
+            return this.age - o.age;
+        }
+    }
+    static int n, m, k;
+    static int[][] arr;
+    static int[][] ans;
+    static int[][] dir = {{-1, 0}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}};
+    static Queue<Tree> tree;
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        m = scan.nextInt();
+        k = scan.nextInt();
+        arr = new int[n][n];
+        ans = new int[n][n];
+        tree = new LinkedList<>();
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                ans[i][j] = 5;
+                arr[i][j] = scan.nextInt();
+            }
+        }
+        while(m--> 0){
+            int x = scan.nextInt() - 1;
+            int y = scan.nextInt() - 1;
+            int age = scan.nextInt();
+            tree.add(new Tree(x, y, age));
+        }
+        while(k--> 0){
+            spring();
+            fall();
+            winter();
+        }
+        Collections.sort((List<Tree>) tree);
+        System.out.println(tree.size());
+    }
+    static void spring(){
+        ArrayList<Tree> die = new ArrayList<>();
+        int size = tree.size();
+        while(size--> 0){
+            Tree now = tree.poll();
+            if(ans[now.x][now.y] - now.age < 0){
+                die.add(new Tree(now.x, now.y, now.age / 2));
+            }else{
+                ans[now.x][now.y] -= now.age;
+                tree.add(new Tree(now.x, now.y, now.age + 1));
+            }
+        }
+        for(Tree t : die){
+            ans[t.x][t.y] += t.age;
+        }
+    }
+    static void fall(){
+        ArrayList<Tree> parent = new ArrayList<>();
+        int size = tree.size();
+        while(size--> 0){
+            Tree now = tree.poll();
+            if(now.age % 5 == 0){
+                for(int i = 0; i < 8; i++){
+                    int nx = now.x + dir[i][0];
+                    int ny = now.y + dir[i][1];
+                    if(nx < 0 || ny < 0 || nx >= n || ny >= n)
+                        continue;
+                    tree.add(new Tree(nx, ny, 1));
+                }
+            }
+            parent.add(now);
+        }
+        tree.addAll(parent);
+    }
+    static void winter(){
+        for(int i = 0; i < n; i++)
+            for(int j = 0; j < n; j++)
+                ans[i][j] += arr[i][j];
+    }
+}
