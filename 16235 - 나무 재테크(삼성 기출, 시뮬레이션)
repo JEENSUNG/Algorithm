@@ -9,63 +9,59 @@ class Main{
             this.age = age;
         }
         @Override
-        public int compareTo(Tree o){
+        public int compareTo(Tree o) {
             return this.age - o.age;
         }
     }
     static int n, m, k;
+    static int[][] food;
     static int[][] arr;
-    static int[][] ans;
     static int[][] dir = {{-1, 0}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}};
-    static Queue<Tree> tree;
+    static Queue<Tree> tree = new LinkedList<>();
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
         n = scan.nextInt();
         m = scan.nextInt();
         k = scan.nextInt();
+        food = new int[n][n];
         arr = new int[n][n];
-        ans = new int[n][n];
-        tree = new LinkedList<>();
-        for(int i = 0; i < n; i++){
+        for(int i = 0; i < n; i++)
             for(int j = 0; j < n; j++){
-                ans[i][j] = 5;
+                food[i][j] = 5;
                 arr[i][j] = scan.nextInt();
             }
-        }
         while(m--> 0){
             int x = scan.nextInt() - 1;
             int y = scan.nextInt() - 1;
             int age = scan.nextInt();
-            tree.add(new Tree(x, y, age));
+            tree.offer(new Tree(x, y, age));
         }
         while(k--> 0){
             spring();
             fall();
             winter();
         }
-        Collections.sort((List<Tree>) tree);
         System.out.println(tree.size());
     }
     static void spring(){
         ArrayList<Tree> die = new ArrayList<>();
         int size = tree.size();
-        while(size--> 0){
+        while(size-- > 0){
             Tree now = tree.poll();
-            if(ans[now.x][now.y] - now.age < 0){
-                die.add(new Tree(now.x, now.y, now.age / 2));
+            if(food[now.x][now.y] - now.age < 0){
+                die.add(new Tree(now.x,now.y,now.age));
             }else{
-                ans[now.x][now.y] -= now.age;
+                food[now.x][now.y] -= now.age;
                 tree.add(new Tree(now.x, now.y, now.age + 1));
             }
         }
-        for(Tree t : die){
-            ans[t.x][t.y] += t.age;
-        }
+        for(Tree t : die)
+            food[t.x][t.y] += t.age / 2;
     }
     static void fall(){
-        ArrayList<Tree> parent = new ArrayList<>();
+        ArrayList<Tree> bread = new ArrayList<>();
         int size = tree.size();
-        while(size--> 0){
+        while(size --> 0){
             Tree now = tree.poll();
             if(now.age % 5 == 0){
                 for(int i = 0; i < 8; i++){
@@ -76,13 +72,13 @@ class Main{
                     tree.add(new Tree(nx, ny, 1));
                 }
             }
-            parent.add(now);
+            bread.add(now);
         }
-        tree.addAll(parent);
+        tree.addAll(bread);
     }
     static void winter(){
         for(int i = 0; i < n; i++)
             for(int j = 0; j < n; j++)
-                ans[i][j] += arr[i][j];
+                food[i][j] += arr[i][j];
     }
 }
