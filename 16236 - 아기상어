@@ -1,0 +1,114 @@
+package com.core.hello;
+
+import java.util.*;
+class Point{
+    int x;
+    int y;
+    int cnt;
+    Point(int x, int y, int cnt){
+        this.x = x;
+        this.y = y;
+        this.cnt = cnt;
+    }
+}
+class  Main{
+    static int n;
+    static int SIZE = 2;
+    static int cnt = 0;
+    static int answer = 0;
+    static boolean[][] visit;
+    static int[][] arr;
+    static int[][] map;
+    static Queue<Point> queue = new LinkedList<>();
+    static int[][] dir = {{-1,0},{1,0},{0,1},{0,-1}};
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        arr = new int[n][n];
+        map = new int[n][n];
+        visit = new boolean[n][n];
+        for(int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                arr[i][j] = scan.nextInt();
+            }
+        }
+        while(true) {
+            int mx = 0;
+            int my = 0;
+            for(int i = 0; i < n; i++){
+                for(int j = 0; j < n; j++){
+                    if(arr[i][j] == 9){
+                        mx = i;
+                        my = j;
+                        check(i, j);
+                    }
+                }
+            }
+            if(real(mx, my)){
+                break;
+            }
+            arr[mx][my] = 0;
+            boolean isOk = false;
+            for(int i = 0; i < n; i++){
+                for(int j = 0; j < n; j++){
+                    if(map[i][j] > 0 && !isOk){
+                        mx = i;
+                        my = j;
+                        isOk = true;
+                        arr[mx][my] = 9;
+                        answer += map[i][j];
+                    }
+                }
+            }
+            System.out.println(3);
+            cnt++;
+            if(SIZE == cnt){
+                SIZE++;
+                cnt = 0;
+            }
+        }
+        System.out.println(answer);
+    }
+    static void check(int x, int y){
+        queue = new LinkedList<>();
+        visit = new boolean[n][n];
+        queue.offer(new Point(x, y, 0));
+        visit[x][y] = true;
+        map = new int[n][n];
+        while(!queue.isEmpty()){
+            Point now = queue.poll();
+            for(int i = 0; i < 4; i++){
+                int nx = now.x + dir[i][0];
+                int ny = now.y + dir[i][1];
+                if(nx < 0 || ny < 0 || nx >= n || ny >= n)
+                    continue;
+                if(visit[nx][ny])
+                    continue;
+                if(arr[nx][ny] == 9)
+                    continue;
+                if(arr[nx][ny] < SIZE && arr[nx][ny] > 0) {
+                    queue.offer(new Point(nx,ny,now.cnt + 1));
+                    visit[nx][ny] = true;
+                    map[nx][ny] = now.cnt + 1;
+                    continue;
+                }
+                queue.offer(new Point(nx, ny, now.cnt + 1));
+                visit[nx][ny] = true;
+            }
+        }
+    }
+    static boolean real(int x, int y){
+        boolean isEnd = false;
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                if(arr[i][j] == 9)
+                    continue;
+                if(arr[i][j] > 0)
+                    return isEnd;
+                if(arr[i][j] < SIZE)
+                    return isEnd;
+            }
+        }
+        return true;
+    }
+}
