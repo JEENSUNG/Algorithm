@@ -40,27 +40,25 @@ class  Main{
                     if(arr[i][j] == 9){
                         mx = i;
                         my = j;
-                        check(i, j);
+                        break;
                     }
                 }
             }
-            if(real(mx, my)){
+            if(possible(mx, my))
                 break;
-            }
+            int temp = Integer.MAX_VALUE;
             arr[mx][my] = 0;
-            boolean isOk = false;
             for(int i = 0; i < n; i++){
                 for(int j = 0; j < n; j++){
-                    if(map[i][j] > 0 && !isOk){
+                    if(map[i][j] < temp && map[i][j] > 0){
+                        temp = map[i][j];
                         mx = i;
                         my = j;
-                        isOk = true;
-                        arr[mx][my] = 9;
-                        answer += map[i][j];
                     }
                 }
             }
-            System.out.println(3);
+            arr[mx][my] = 9;
+            answer += map[mx][my];
             cnt++;
             if(SIZE == cnt){
                 SIZE++;
@@ -69,12 +67,13 @@ class  Main{
         }
         System.out.println(answer);
     }
-    static void check(int x, int y){
-        queue = new LinkedList<>();
+    static boolean possible(int x, int y){
+        map = new int[n][n];
         visit = new boolean[n][n];
+        int temp = SIZE;
+        queue = new LinkedList<>();
         queue.offer(new Point(x, y, 0));
         visit[x][y] = true;
-        map = new int[n][n];
         while(!queue.isEmpty()){
             Point now = queue.poll();
             for(int i = 0; i < 4; i++){
@@ -84,31 +83,26 @@ class  Main{
                     continue;
                 if(visit[nx][ny])
                     continue;
-                if(arr[nx][ny] == 9)
+                if(arr[nx][ny] > SIZE)
                     continue;
-                if(arr[nx][ny] < SIZE && arr[nx][ny] > 0) {
-                    queue.offer(new Point(nx,ny,now.cnt + 1));
+                if(arr[nx][ny] == 0){
+                    queue.offer(new Point(nx, ny, now.cnt + 1));
                     visit[nx][ny] = true;
-                    map[nx][ny] = now.cnt + 1;
                     continue;
                 }
-                queue.offer(new Point(nx, ny, now.cnt + 1));
-                visit[nx][ny] = true;
-            }
-        }
-    }
-    static boolean real(int x, int y){
-        boolean isEnd = false;
-        for(int i = 0; i < n; i++){
-            for(int j = 0; j < n; j++){
-                if(arr[i][j] == 9)
+                if(arr[nx][ny] == SIZE){
+                    queue.offer(new Point(nx, ny, now.cnt + 1));
+                    visit[nx][ny] = true;
                     continue;
-                if(arr[i][j] > 0)
-                    return isEnd;
-                if(arr[i][j] < SIZE)
-                    return isEnd;
+                }
+                if(arr[nx][ny] < SIZE) {
+                    temp = Math.min(arr[nx][ny], temp);
+                    queue.offer(new Point(nx, ny, now.cnt + 1));
+                    visit[nx][ny] = true;
+                    map[nx][ny] = now.cnt + 1;
+                }
             }
         }
-        return true;
+        return temp == SIZE;
     }
 }
