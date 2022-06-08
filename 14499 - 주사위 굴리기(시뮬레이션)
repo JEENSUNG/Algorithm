@@ -1,0 +1,65 @@
+package com.core.hello;
+import java.util.*;
+class Main{
+    static int n, m;
+    static int[] dice;
+    static int[][] arr;
+    static int k;
+    static int dir[][] = {{0,1},{0,-1},{-1,0},{1,0}};
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        m = scan.nextInt();
+        dice = new int[7];
+        int x = scan.nextInt();
+        int y = scan.nextInt();
+        k = scan.nextInt();
+        arr = new int[n][m];
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                arr[i][j] = scan.nextInt();
+            }
+        }
+        while(k--> 0){
+            int t = scan.nextInt() - 1;
+            int nx = x + dir[t][0];
+            int ny = y + dir[t][1];
+            if(nx < 0 || ny < 0 || nx >= n | ny >= m)
+                continue;
+            changeDice(t+1);
+            if(arr[nx][ny] == 0){
+                arr[nx][ny] = dice[6];
+            }else{
+                dice[6] = arr[nx][ny];
+                arr[nx][ny] = 0;
+            }
+            x = nx;
+            y = ny;
+            System.out.println(dice[1]);
+        }
+    }
+    static void changeDice(int d){
+        int[] temp = dice.clone();
+        if (d == 1) {
+            dice[1] = temp[4];
+            dice[3] = temp[1];
+            dice[4] = temp[6];
+            dice[6] = temp[3];
+        } else if (d == 2) {
+            dice[1] = temp[3];
+            dice[3] = temp[6];
+            dice[4] = temp[1];
+            dice[6] = temp[4];
+        } else if (d == 3) {
+            dice[1] = temp[5];
+            dice[2] = temp[1];
+            dice[5] = temp[6];
+            dice[6] = temp[2];
+        } else {
+            dice[1] = temp[2];
+            dice[2] = temp[6];
+            dice[5] = temp[1];
+            dice[6] = temp[5];
+        }
+    }
+}
