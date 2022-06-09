@@ -1,0 +1,65 @@
+package com.core.hello;
+import java.awt.*;
+import java.util.*;
+class Main{
+    static int[][] arr;
+    static boolean[][] visit;
+    static int n, m;
+    static int answer = 0;
+    static int[][] dir = {{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
+    static Queue<Point> queue = new LinkedList<>();
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        m = scan.nextInt();
+        arr = new int[n][m];
+        visit = new boolean[n][m];
+        ArrayList<Integer> list = new ArrayList<>();
+        for(int i = 0; i < n; i++)
+            for(int j = 0; j < m; j++)
+                arr[i][j] = scan.nextInt();
+        int sum = 0;
+        while(true){
+            sum = 0;
+            for(int i = 0; i < n; i++) {
+                for (int j = 0; j < m; j++){
+                    if(arr[i][j] == 1)
+                        sum++;
+                }
+            }
+            list.add(sum);
+            if(sum == 0)
+                break;
+            bfs();
+            answer++;
+        }
+        Collections.sort(list);
+        System.out.println(answer);
+        System.out.println(list.get(1));
+    }
+    static void bfs(){
+        queue = new LinkedList<>();
+        visit = new boolean[n][m];
+        queue.offer(new Point(0, 0));
+        visit[0][0] = true;
+        while (!queue.isEmpty()) {
+            Point now = queue.poll();
+            for(int i = 0; i < 4; i++){
+                int nx = now.x + dir[i][0];
+                int ny = now.y + dir[i][1];
+                if(nx < 0 || ny < 0 || nx >= n || ny >= m)
+                    continue;
+                if(visit[nx][ny])
+                    continue;
+                if(arr[nx][ny] == 0){
+                    queue.offer(new Point(nx, ny));
+                    visit[nx][ny] = true;
+                }
+                if(arr[nx][ny] == 1){
+                    arr[nx][ny] = 0;
+                    visit[nx][ny] = true;
+                }
+            }
+        }
+    }
+}
