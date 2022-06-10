@@ -1,0 +1,45 @@
+package com.core.hello;
+import java.util.*;
+class Main{
+    static int n, m;
+    static int[][] arr;
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        m = scan.nextInt();
+        arr = new int[n][m];
+        ArrayList<Integer> list;
+        for(int i = 0; i < m; i++) {
+            int temp = scan.nextInt();
+            for(int j = n - 1; j >= n - temp; j--){
+                arr[j][i] = 1;
+            }
+        }
+        int sum = 0;
+        for(int i = 0; i < n; i++){
+            list = new ArrayList<>();
+            for(int j = 0; j < m; j++) {
+                if (arr[i][j] == 1) {
+                    list.add(j);
+                }
+            }
+            if(list.size() % 2 == 0 && list.size() > 0){
+                for(int j = 0; j < list.size() - 1; j++){
+                    int now = list.get(j);
+                    int now2 = list.get(j + 1);
+                    if(Math.abs(now - now2) > 1)
+                        sum += now2 - now - 1;
+                }
+            }
+            else if(list.size() % 2 == 1 && list.size() > 1){
+                for(int j = 0; j < list.size() - 1; j++){
+                    int now = list.get(j);
+                    int now2 = list.get(j + 1);
+                    if(Math.abs(now - now2) > 1)
+                        sum += now2 - now - 1;
+                }
+            }
+        }
+        System.out.println(sum);
+    }
+}
