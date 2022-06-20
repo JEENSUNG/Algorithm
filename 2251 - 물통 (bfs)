@@ -1,0 +1,49 @@
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+public class Main {
+    static int dir[][] = {{0,1},{0,2},{1,0},{1,2},{2,0},{2,1}};
+    static int[] arr = new int[3];
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        for(int i = 0; i < 3; i++)
+            arr[i] = scan.nextInt();
+        int sum = arr[2];
+        boolean[][] visit = new boolean[201][201];
+        boolean[] ans = new boolean[201];
+        Queue<Integer> queue = new LinkedList<>();
+        queue.offer(0);
+        queue.offer(0);
+        visit[0][0] = true;
+        ans[arr[2]] = true;
+        while (!queue.isEmpty()) {
+            int temp[] = new int[3];
+            temp[0] = queue.remove();
+            temp[1] = queue.remove();
+            temp[2] = sum - temp[0] - temp[1];
+            for(int k = 0; k < 6; k++){
+                int next[] = {temp[0], temp[1], temp[2]};
+                next[dir[k][0]] += next[dir[k][1]];
+                next[dir[k][1]] = 0;
+                if(next[dir[k][0]] >= arr[dir[k][0]]){
+                    next[dir[k][1]] = next[dir[k][0]] - arr[dir[k][0]];
+                    next[dir[k][0]] = arr[dir[k][0]];
+                }
+                if(!visit[next[0]][next[1]]){
+                    visit[next[0]][next[1]] = true;
+                    queue.offer(next[0]);
+                    queue.offer(next[1]);
+                    if(next[0] == 0){
+                        ans[next[2]] = true;
+                    }
+                }
+            }
+        }
+        for(int i = 0; i <= arr[2]; i++){
+            if(ans[i])
+                System.out.print(i + " ");
+        }
+    }
+}
