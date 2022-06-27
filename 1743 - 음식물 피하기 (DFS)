@@ -1,0 +1,50 @@
+import java.util.*;
+class Main{
+    static int n, m, k;
+    static int[][] arr;
+    static boolean[][] visit;
+    static int answer = 0;
+    static int sum = 1;
+    static int[][] dir = {{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        m = scan.nextInt();
+        k = scan.nextInt();
+        arr = new int[n][m];
+        visit = new boolean[n][m];
+        for(int i = 0; i < k; i++){
+            int x = scan.nextInt() - 1;
+            int y = scan.nextInt() - 1;
+            arr[x][y] = 1;
+        }
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                if(!visit[i][j]){
+                    if(arr[i][j] == 1){
+                        visit[i][j] = true;
+                        sum = 1;
+                        dfs(i, j);
+                    }
+                }
+            }
+        }
+        System.out.println(answer);
+    }
+    static void dfs(int x, int y){
+        answer = Math.max(sum, answer);
+        for(int i = 0; i < 4; i++){
+            int nx = x + dir[i][0];
+            int ny = y + dir[i][1];
+            if(nx < 0 || ny < 0 || nx >= n || ny >= m)
+                continue;
+            if(visit[nx][ny])
+                continue;
+            if(arr[nx][ny] == 1){
+                visit[nx][ny] = true;
+                sum = sum + 1;
+                dfs(nx, ny);
+            }
+        }
+    }
+}
