@@ -1,0 +1,37 @@
+import java.util.*;
+public class Main{
+    static int[][] dir = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    static double[] per;
+    static boolean[][] visit;
+    static double result;
+    static int n;
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        per = new double[4];
+        for(int i = 0; i < 4; i++)
+            per[i] = scan.nextInt() * 0.01;
+        visit = new boolean[30][30];
+        result = 0;
+        dfs(15, 15, 0, 1);
+        System.out.println(result);
+    }
+    static void dfs(int x, int y, int cnt,double total){
+        if(cnt == n){
+            result += total;
+            return;
+        }
+        visit[x][y] = true;
+        for(int i = 0; i < 4; i++){
+            int nx = x + dir[i][0];
+            int ny = y + dir[i][1];
+            if(nx < 0 || ny < 0 || nx >= 30 || ny >= 30)
+                continue;
+            if(visit[nx][ny])
+                continue;
+            visit[nx][ny] = true;
+            dfs(nx, ny, cnt + 1, total * per[i]);
+            visit[nx][ny] = false;
+        }
+    }
+}
