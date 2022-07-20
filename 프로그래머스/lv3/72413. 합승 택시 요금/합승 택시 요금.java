@@ -1,27 +1,58 @@
 import java.util.*;
-class Solution{
-    public int solution(int n, int s, int a, int b, int[][] fares){
-        int[][] arr = new int[n + 1][n + 1];
-        for(int i = 0; i <= n; i++){
-            Arrays.fill(arr[i], 20000001);
-            arr[i][i] = 0;
+class Edge implements Comparable<Edge>{
+    int a;
+    int b;
+    public Edge(int a, int b){
+        this.a = a;
+        this.b = b;
+    }
+    @Override
+    public int compareTo(Edge o){
+        return this.b - o.b;
+    }
+}
+class Solution {
+    static ArrayList<Edge>[] list;
+
+    public static int solution(int n, int s, int a, int b, int[][] fares) {
+        list = new ArrayList[n + 1];
+        for (int i = 1; i < list.length; i++) {
+            list[i] = new ArrayList<>();
         }
-        for(int i = 0; i < fares.length; i++){
-            int start = fares[i][0];
-            int end = fares[i][1];
-            int cost = fares[i][2];
-            arr[start][end] = arr[end][start] = cost;
+        for (int[] fare : fares) {
+            int x = fare[0];
+            int y = fare[1];
+            int z = fare[2];
+            list[x].add(new Edge(y, z));
+            list[y].add(new Edge(x, z));
         }
-        for(int i = 1; i <= n; i++){
-            for(int j = 1; j <= n; j++){
-                for(int k = 1; k <= n; k++){
-                    arr[j][k] = Math.min(arr[j][k], arr[j][i] + arr[i][k]);
-                }
-            }
-        }
-        int answer = arr[s][a] + arr[s][b];
-        for(int i = 1; i <= n; i++)
-            answer = Math.min(answer, arr[s][i] + arr[i][a] + arr[i][b]);
+        int[] start = new int[n + 1];
+        int[] startA = new int[n + 1];
+        int[] startB = new int[n + 1];
+        Arrays.fill(start, Integer.MAX_VALUE);
+        Arrays.fill(startA, Integer.MAX_VALUE);
+        Arrays.fill(startB, Integer.MAX_VALUE);
+
+        dijkstra(s, start);
+        dijkstra(a, startA);
+        dijkstra(b, startB);
+        int answer = Integer.MAX_VALUE;
+        for (int i = 1; i < start.length; i++)
+            answer = Math.min(answer, start[i] + startA[i] + startB[i]);
         return answer;
+    }
+
+    public static void dijkstra(int s, int[] arr) {
+        arr[s] = 0;
+        PriorityQueue<Edge> queue = new PriorityQueue<>();
+        queue.offer(new Edge(s, 0));
+        while (!queue.isEmpty()) {
+            Edge now = queue.poll();
+            for (Edge i : list[now.a])
+                if (arr[i.a] > now.b + i.b) {
+                    arr[i.a] = now.b + i.b;
+                    queue.offer(new Edge(i.a, arr[i.a]));
+                }
+        }
     }
 }
