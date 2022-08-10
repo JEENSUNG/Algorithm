@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 
 class Solution {
     public int[] solution(String s){
@@ -34,17 +35,7 @@ class Solution {
                 i+=2;
             }
         }
-        for(int i = 0; i < list.length; i++){
-            for(int j = 0; j < list.length; j++){
-                if(list[j].size() == i + 1) {
-                    ArrayList<Integer> temp;
-                    temp = list[i];
-                    list[i] = list[j];
-                    list[j] = temp;
-                    break;
-                }
-            }
-        }
+        Arrays.sort(list, Comparator.comparingInt(ArrayList::size));
         boolean[] visit = new boolean[100001];
         for(int i = 0; i < list.length; i++){
             for(int j = 0; j < list[i].size(); j++){
