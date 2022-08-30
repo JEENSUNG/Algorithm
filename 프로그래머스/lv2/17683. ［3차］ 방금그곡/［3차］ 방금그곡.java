@@ -14,9 +14,11 @@ class Solution {
 
         @Override
         public int compareTo(File o) {
-            if(this.time == o.time)
+            int a = o.time;
+            int b = this.time;
+            if (this.time == o.time)
                 return this.num - o.num;
-            return o.time - this.time;
+            return a - b;
         }
     }
     public String solution(String m, String[] musicinfos) {
