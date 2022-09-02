@@ -1,5 +1,4 @@
-import java.util.Stack;
-
+import java.util.*;
 class Solution {
     boolean solution(String s) {
         Stack<Character> stack = new Stack<>();
