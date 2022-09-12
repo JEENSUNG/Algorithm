@@ -10,8 +10,16 @@ class Solution {
         if(A[A.length - 1] < B[0])
             return B.length;
         while(bIndex < B.length && aIndex < A.length){
-            if(A[aIndex] < B[bIndex])
+            if(A[aIndex] < B[bIndex]) {
                 answer++;
+                aIndex++;
+                bIndex++;
+            }
+//            이 부분이 추가 내용
+//            if(A[aIndex] == B[bIndex]){
+//                aIndex++;
+//                bIndex++;
+//            }
             else if(A[aIndex] >= B[bIndex]){
                 while(bIndex < B.length){
                     if(A[aIndex] < B[bIndex])
@@ -21,9 +29,9 @@ class Solution {
                 if(bIndex == B.length)
                     return answer;
                 answer++;
+                aIndex++;
+                bIndex++;
             }
-            aIndex++;
-            bIndex++;
         }
         return answer;
     }
