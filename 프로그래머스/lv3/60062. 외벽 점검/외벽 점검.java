@@ -16,7 +16,7 @@ class Solution {
             makeArr(i);
             makeDist(new int[dist.length],0, dist.length, dist, new boolean[dist.length]);
         }
-        if(answer >= dist.length + 1)
+        if(answer > dist.length)
             return -1;
         return answer;
     }
@@ -27,13 +27,13 @@ class Solution {
         if(count == end){
             int max = 0;
             int t = 0;
-            int next;
-            while(max < dist.length && t < arr.length){
-                next = t + 1;
-                while(next < arr.length && arr[t] + ans[max] >= arr[next]){
-                    next++;
-                }
-                t = next;
+            int sum;
+            for(int i = 0; i < ans.length; i++){
+                if(t == arr.length)
+                    break;
+                sum = ans[i] + arr[t];
+                while(t < arr.length && sum >= arr[t])
+                    t++;
                 max++;
             }
             if(t == arr.length)
