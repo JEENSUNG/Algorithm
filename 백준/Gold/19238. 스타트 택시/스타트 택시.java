@@ -54,34 +54,40 @@ class Main{
             int index = 0;
             int nx = 0;
             int ny = 0;
-            for(int j = 0; j < list.size(); j++){
+            for(int j = 0; j < list.size(); j++) {
                 Taxi now = list.get(j);
-                if(map[now.x][now.y] < max && map[now.x][now.y] > 0){
-                    max = map[now.x][now.y];
-                    nx = now.x;
-                    ny = now.y;
-                    index = j;
-                }
-                else if(map[now.x][now.y] == max){
-                    if(nx == now.x){
-                        if(ny > now.y){
-                            ny = now.y;
-                            index = j;
-                        }
-                    }else if(nx > now.x){
-                        nx = now.x;
-                        ny = now.y;
-                        index = j;
-                    }
-                }else if(map[now.x][now.y] == 0)
+                if(map[now.x][now.y] == 0)
                     if(taxi.x == now.x && taxi.y == now.y) {
                         isOk = true;
                         index = j;
                         break;
                     }
             }
-            if(max != Integer.MAX_VALUE && !isOk)
-                answer = answer - max;
+            if(!isOk){
+                for(int j = 0; j < list.size(); j++){
+                    Taxi now = list.get(j);
+                    if(map[now.x][now.y] < max && map[now.x][now.y] > 0){
+                        max = map[now.x][now.y];
+                        nx = now.x;
+                        ny = now.y;
+                        index = j;
+                    }
+                    else if(map[now.x][now.y] == max){
+                        if(nx == now.x){
+                            if(ny > now.y){
+                                ny = now.y;
+                                index = j;
+                            }
+                        }else if(nx > now.x){
+                            nx = now.x;
+                            ny = now.y;
+                            index = j;
+                        }
+                    }
+                }
+                if(max != Integer.MAX_VALUE)
+                    answer = answer - max;
+            }
             if(answer < 0 || (!isOk && map[list.get(index).x][list.get(index).y] == 0)){
                 System.out.println(-1);
                 System.exit(0);
