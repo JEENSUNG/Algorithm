@@ -238,10 +238,6 @@ class Main{
         int s = 0;
         boolean is = false;
         arr = new int[n][n];
-        if(test.isEmpty()){
-            System.out.println(answer);
-            System.exit(0);
-        }
         arr[nx][ny] = test.poll();
         while (!test.isEmpty()){
             if(s == 0){
