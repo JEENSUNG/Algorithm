@@ -1,12 +1,4 @@
 import java.util.*;
-class Words{
-    int length;
-    String str;
-    Words(int length, String str){
-        this.length = length;
-        this.str = str;
-    }
-}
 public class Main {
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
@@ -19,7 +11,7 @@ public class Main {
         long max = list.get(list.size() - 1);
         long answer = 0;
         long left = 1;
-        long right = (long)Integer.MAX_VALUE + 1;
+        long right = max + 1;
         long mid = 0;
         int count = 0;
         while (left < right){
