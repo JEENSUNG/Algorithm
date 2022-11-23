@@ -2,7 +2,7 @@ package com.core.hello;
 import java.util.*;
 class Main{
     static int n, t;
-    static int[] arr;
+    static int[]  arr;
     static int count;
     static boolean[] visit;
     public static void main(String[] args) {
