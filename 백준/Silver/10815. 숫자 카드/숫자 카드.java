@@ -1,7 +1,5 @@
-
 import java.util.*;
 public class Main {
-
 	public static void main(String[] args) {
 		Scanner scan = new Scanner(System.in);
 		int n = scan.nextInt();
@@ -10,7 +8,6 @@ public class Main {
 			arr[i] = scan.nextInt();
 		int m = scan.nextInt();
 		int[] ans = new int[m];
-		int[] t = new int[500001];
 		for(int i = 0; i < m; i++) 
 			ans[i] = scan.nextInt();
 		int[] answer = new int[m];
@@ -23,14 +20,13 @@ public class Main {
 			int max = n - 1;
 			while(min <= max) {
 				int mid = (min + max) / 2;
-				if(arr[mid] < temp) {
-					min = mid + 1;
-				}
-				else if(arr[mid] > temp) {
-					max = mid - 1;
-				}else {
+				if(arr[mid] == temp) {
 					answer[i] = 1;
 					break;
+				}else if(arr[mid] < temp) {
+					min = mid + 1;
+				}else if(arr[mid] > temp) {
+					max = mid - 1;
 				}
 			}
 		}
