@@ -56,8 +56,7 @@ public class Main {
 			int ky = now.y + dir[d][1];
 			if(!visit[kx][ky]) {
 				queue.offer(new Point2(kx, ky));
-
-				visit[now.x][now.y] = true; 
+				visit[kx][ky] = true; 
 			}
 			for(int i = 0; i < 4; i++) {
 				int nx = now.x + dir[i][0];
@@ -67,25 +66,21 @@ public class Main {
 				if(i == 0) {
 					if(arr[nx][ny] == 1) {
 						queue.offer(new Point2(nx, ny));
-
 						visit[nx][ny] = true; 
 					}
 				}else if(i == 1) {
 					if(arr[nx][ny] == 0) {
 						queue.offer(new Point2(nx, ny));
-
 						visit[nx][ny] = true; 
 					}
 				}else if(i == 2) {
 					if(arr[nx][ny] == 3) {
 						queue.offer(new Point2(nx, ny));
-
 						visit[nx][ny] = true; 
 					}
 				}else {
 					if(arr[nx][ny] == 2) {
 						queue.offer(new Point2(nx, ny));
-
 						visit[nx][ny] = true; 
 					}
 				}
