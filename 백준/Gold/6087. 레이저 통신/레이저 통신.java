@@ -14,14 +14,12 @@ class NN{
 public class Main {
 	static int w, h, sx, sy;
 	static int[][] arr, map;
-	static boolean[][] visit;
 	static int[][] dir = {{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
 	public static void main(String[] args) {
 		Scanner scan = new Scanner(System.in);
 		w = scan.nextInt();
 		h = scan.nextInt();
 		arr = new int[h][w];
-		visit = new boolean[h][w];
 		int ex = 0, ey = 0;
 		boolean isOk = false;
 		for(int i = 0; i < h; i++) {
@@ -78,7 +76,6 @@ public class Main {
 							queue.offer(new NN(nx, ny, i, map[nx][ny]));
 						}
 					}
-					
 				}
 			}
 		}
