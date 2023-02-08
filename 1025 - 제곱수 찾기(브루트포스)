@@ -40,10 +40,9 @@ public class Main {
     }
     static boolean check(int x){
         int t = (int)Math.sqrt(x);
-        for(int i = t - 2; i <= t + 2; i++){
+        for(int i = t - 2; i <= t + 2; i++)
             if(i * i == x)
                 return true;
-        }
         return false;
     }
 }
