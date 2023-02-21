@@ -63,9 +63,6 @@ public class Main {
 					if(visit[nx][ny] == 0) {
 						queue.offer(new Point(nx, ny, now.time + 1));
 						visit[nx][ny] = now.time + 1;
-					}else if(visit[nx][ny] > now.time + 1) {
-						visit[nx][ny] = now.time + 1;
-						queue.offer(new Point(nx, ny, now.time + 1));
 					}
 				}
 			}
