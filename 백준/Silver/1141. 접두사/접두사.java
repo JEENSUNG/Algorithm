@@ -22,7 +22,7 @@ public class Main {
 			}
 			boolean isOk = true;
 			for(String next : set) {
-				if(next.indexOf(now) == 0) {
+				if(next.startsWith(now)) {
 					isOk = false;
 					break;
 				}
