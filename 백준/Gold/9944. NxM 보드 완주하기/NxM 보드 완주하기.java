@@ -49,15 +49,15 @@ public class Main {
 		}
 	}
 	static void dfs(int x, int y, int d, int sum, int cnt) {
-		if(count == cnt) {
-			answer = Math.min(answer, sum);
+		if(count == sum) {
+			answer = Math.min(answer, cnt);
 			return;
 		}
 		int nx = x + dir[d][0]; 
 		int ny = y + dir[d][1];
 		if(nx >= 0 && ny >= 0 && nx < n && ny < m && arr[nx][ny] == '.' && !visit[nx][ny]) {
 			visit[nx][ny] = true;
-			dfs(nx, ny, d, sum, cnt + 1);
+			dfs(nx, ny, d, sum + 1, cnt);
 			visit[nx][ny] = false;
 		}else {
 			for(int i = 0; i < 4; i++) {
