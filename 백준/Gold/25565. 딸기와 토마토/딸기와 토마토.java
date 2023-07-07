@@ -35,8 +35,10 @@ public class Main {
 					}
 					if(m >= k + j) {
 						for(int t = 0; t < k; t++) {
-							if(arr[i][j + t] == false)
+							if(arr[i][j + t] == false) {
 								X = false;
+								break;
+							}
 						}
 						if(X) {
 							for(int t = 0; t < k; t++)
