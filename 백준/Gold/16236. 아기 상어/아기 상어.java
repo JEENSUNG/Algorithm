@@ -1,0 +1,107 @@
+
+import java.util.*;
+class Point{
+    int x;
+    int y;
+    int cnt;
+    Point(int x, int y, int cnt){
+        this.x = x;
+        this.y = y;
+        this.cnt = cnt;
+    }
+}
+class  Main{
+    static int n;
+    static int SIZE = 2;
+    static int cnt = 0;
+    static int answer = 0;
+    static boolean[][] visit;
+    static int[][] arr;
+    static int[][] map;
+    static Queue<Point> queue = new LinkedList<>();
+    static int[][] dir = {{-1,0},{1,0},{0,1},{0,-1}};
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        n = scan.nextInt();
+        arr = new int[n][n];
+        map = new int[n][n];
+        visit = new boolean[n][n];
+        for(int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                arr[i][j] = scan.nextInt();
+            }
+        }
+        while(true) {
+            int mx = 0;
+            int my = 0;
+            for(int i = 0; i < n; i++){
+                for(int j = 0; j < n; j++){
+                    if(arr[i][j] == 9){
+                        mx = i;
+                        my = j;
+                        break;
+                    }
+                }
+            }
+            if(possible(mx, my))
+                break;
+            int temp = Integer.MAX_VALUE;
+            arr[mx][my] = 0;
+            for(int i = 0; i < n; i++){
+                for(int j = 0; j < n; j++){
+                    if(map[i][j] < temp && map[i][j] > 0){
+                        temp = map[i][j];
+                        mx = i;
+                        my = j;
+                    }
+                }
+            }
+            arr[mx][my] = 9;
+            answer += map[mx][my];
+            cnt++;
+            if(SIZE == cnt){
+                SIZE++;
+                cnt = 0;
+            }
+        }
+        System.out.println(answer);
+    }
+    static boolean possible(int x, int y){
+        map = new int[n][n];
+        visit = new boolean[n][n];
+        int temp = SIZE;
+        queue = new LinkedList<>();
+        queue.offer(new Point(x, y, 0));
+        visit[x][y] = true;
+        while(!queue.isEmpty()){
+            Point now = queue.poll();
+            for(int i = 0; i < 4; i++){
+                int nx = now.x + dir[i][0];
+                int ny = now.y + dir[i][1];
+                if(nx < 0 || ny < 0 || nx >= n || ny >= n)
+                    continue;
+                if(visit[nx][ny])
+                    continue;
+                if(arr[nx][ny] > SIZE)
+                    continue;
+                if(arr[nx][ny] == 0){
+                    queue.offer(new Point(nx, ny, now.cnt + 1));
+                    visit[nx][ny] = true;
+                    continue;
+                }
+                if(arr[nx][ny] == SIZE){
+                    queue.offer(new Point(nx, ny, now.cnt + 1));
+                    visit[nx][ny] = true;
+                    continue;
+                }
+                if(arr[nx][ny] < SIZE) {
+                    temp = Math.min(arr[nx][ny], temp);
+                    queue.offer(new Point(nx, ny, now.cnt + 1));
+                    visit[nx][ny] = true;
+                    map[nx][ny] = now.cnt + 1;
+                }
+            }
+        }
+        return temp == SIZE;
+    }
+}
